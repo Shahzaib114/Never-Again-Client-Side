@@ -1,38 +1,31 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { responsiveScreenWidth, responsiveScreenHeight, responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import TopBar from '../../components/topbar';
 import { useNavigation } from '@react-navigation/native';
+import { approvedBrandDetails, getBrandCount, getCategories, getCategoriesByName } from '../../api/hooks';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { approvedBrands, categories, exploreCategoriesByName } from '../../api/schema/queries';
+import CodeScanner from '../cameraScanner/codeScanner';
+import Header from '../../components/header/Header';
 
 
 
 const numColumns = 2;
 const Home = () => {
+    const { loading, error, categoriesData } = getCategories();
+    const [fetchCategories, { loadincg, errosar, data }] = useLazyQuery(exploreCategoriesByName);
+    // const { detailedCatergoryLoading, detailedCatergoryerror, detailedCatergoryData } = getCategoriesByName();
+    const [myData, setMyData] = useState([])
+    const navigation = useNavigation();
 
-    const navigation=useNavigation();
+    useEffect(() => {
+        setMyData(categoriesData?.categories)
+    }, [categoriesData])
 
-    const data = [
-        {
-            id: 1,
-            name: "Latest"
-        },
-        {
-            id: 2,
-            name: "Clothes"
-        },
-        {
-            id: 3,
-            name: "App"
-        },
-        {
-            id: 4,
-            name: "Snack"
-        },
-        {
-            id: 5,
-            name: "Technology"
-        },
-    ]
+    useEffect(() => {
+        console.log('detailedCatergoryData', data)
+    }, [data])
+
 
     const array = [
         {
@@ -69,45 +62,63 @@ const Home = () => {
         },
     ]
 
-    function nav(id) {
-        console.log(id)
-        {
-          switch (id) {
-            case 0:
-              navigation.navigate('BrandDetails');
-              break;       
-            default:
-          }
+    async function nav(item) {
+        console.log(item)
+        let categoryName = item?.name
+        try {
+            await fetchCategories({
+                variables: { categoryName }
+            })
+        } catch (error) {
+            console.error('Error:', error);
         }
-      }
+    }
     return (
         <View style={{ flex: 1, backgroundColor: "white" }}>
             <View style={{ height: responsiveScreenHeight(8) }}>
-                <TopBar />
+                <Header
+                    isBack={false}
+                />
             </View>
-            <View style={{alignItems:"center",marginLeft:responsiveScreenWidth(5)}}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {data.map((item) => (
-        
-                            <View key={item.id}>
-                            <TouchableOpacity
-                                style={
-                                    styles.itemContainer
-                                }
-                                key={item.id}
-                            >
-                                <Text style={styles.titleText}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
-                            </View>
+            <View style={{ alignItems: "center", marginLeft: responsiveScreenWidth(5) }}>
+                {loading ?
+                    (
+                        <View>
+                            <ActivityIndicator></ActivityIndicator>
+                        </View>
+                    )
+                    :
+                    (
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            {myData?.map((item) => (
+
+                                <View key={item.id}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            console.log(item)
+                                            nav(item)
+                                        }}
+                                        style={
+                                            styles.itemContainer
+                                        }
+                                        key={item.id}
+                                    >
+                                        <Text style={styles.titleText}>
+                                            {item.name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
 
 
-                    ))}
-                </ScrollView>
+                            ))}
+                        </ScrollView>
+                    )
+                }
             </View>
             <View>
-                <Text style={{ color: "black", fontSize: responsiveScreenFontSize(2), margin: "4%" }}>
+                <Text style={{
+                    color: "black", fontFamily: 'mrt-rglr', fontSize: responsiveScreenFontSize(2), margin: "4%"
+                }}>
                     Latest Brand
                 </Text>
             </View>
@@ -118,15 +129,19 @@ const Home = () => {
                     data={array}
                     renderItem={({ item }) => {
                         return (
-                            <TouchableOpacity style={styles.itemContainer2} 
-                            onPress={() => nav(item.id)}
+                            <TouchableOpacity style={styles.itemContainer2}
+                                onPress={() => {
+                                    nav(item)
+                                    navigation.navigate('BrandDetails')
+                                }}
                             >
                                 <View style={{ marginTop: responsiveScreenHeight(2) }}>
-                                    <Text style={{ color: "black" }}>{item.name}</Text>
+                                    <Text style={{
+                                        color: "black", fontFamily: 'mrt-rglr'}}>{item.name}</Text>
                                 </View>
 
-                                <View style={{ backgroundColor: "yellow", width: responsiveScreenWidth(20), height: responsiveScreenHeight(4), alignItems: "center", justifyContent: "center", borderRadius: 10, marginTop: "10%" }}>
-                                    <Text style={{ color: "black" }}>
+                                <View style={{ backgroundColor: "#BFFF00", width: responsiveScreenWidth(20), height: responsiveScreenHeight(4), alignItems: "center", justifyContent: "center", borderRadius: 10, marginTop: "10%" }}>
+                                    <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>
                                         View More
                                     </Text>
                                 </View>
@@ -139,7 +154,7 @@ const Home = () => {
                     numColumns={numColumns}
                 />
             </View>
-        </View>
+        </View >
     )
 }
 
@@ -147,10 +162,10 @@ const styles = StyleSheet.create({
     itemContainer: {
         margin: 6,
         backgroundColor: 'white',
-        alignItems:"center",
-        justifyContent:"center",
-        padding:9,
-        borderRadius:10,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 9,
+        borderRadius: 10,
         overflow: 'hidden',
         ...Platform.select({
             android: {
@@ -175,7 +190,8 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: responsiveScreenFontSize(2),
-        color: "black"
+        color: "black",
+        fontFamily: 'mrt-rglr'
     },
     packageDetailsContainer: {
         margin: responsiveScreenWidth(4),
