@@ -1,106 +1,131 @@
 import { useIsFocused } from '@react-navigation/native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import {
     Camera,
     CameraType
 } from 'expo-camera';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+    Alert,
+    AppState,
     Image,
     Linking,
-    PermissionsAndroid,
+    Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
     View
 } from 'react-native';
+import { responsiveFontSize } from 'react-native-responsive-dimensions';
 import { scale } from 'react-native-size-matters';
-import Header from '../../components/header/Header';
-export default function CodeScanner() {
 
+export default function CodeScanner() {
     //defining all the states and require functions
     const [type, setType] = useState(CameraType.back);
     const [hasPermission, setHasPermission] = useState(null);
-    const [scanned, setScanned] = useState(false);
+    const [scanned, setScanned] = useState();
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const focus = useIsFocused()
+    const [camera, setCamera] = useState({
+        hasCameraPermission: null,
+        type: Camera.Constants.Type.back,
+    });
+
 
     useEffect(() => {
-        if (focus) {
-            if (!permission) {
-                console.log('camera ermisioos', permission)
-                requestCameraPermission()
-            }
+        if (!permission) {
+            requestCameraPermission()
         }
-    }, [focus, hasPermission])
+    }, [hasPermission])
+
+
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            appState.current = nextAppState;
+            setAppStateVisible(appState.current);
+            if (AppState.currentState === 'active') {
+                setScanned(false)
+            }
+        });
+
+        return () => {
+            subscription.remove();
+        };
+    }, []);
+
 
     const requestCameraPermission = async () => {
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('You can use the camera');
-                setHasPermission(true)
-            } else {
-                console.log('Camera permission denied');
-                setHasPermission(false)
-            }
-        } catch (err) {
-            console.warn(err);
-        }
+        const { status } = await Camera.requestCameraPermissionsAsync()
+        setCamera(prevState => ({ ...prevState, hasCameraPermission: status === 'granted' }));
     };
-
-
-    const reqCameraPermission = async () => {
-        const perm = PermissionsAndroid.PERMISSIONS.CAMERA
-        console.log('perm', perm)
-        const granted = await requestPermission()
-        console.log('granted', granted)
-        setHasPermission(granted.granted)
-    }
-
-    //functions for onpress or rendering
 
     function toggleCameraType() {
         setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
     }
-    const handleBarCodeScanned = ({ type, data }) => {
-        setScanned(true);
-        Linking.openURL(data)
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    };
 
+    const handleReadCode = useCallback(
+        async (data) => {
+            Alert.alert('QR/Bar Code Scanned', data.data, [
+                {
+                    text: 'Cancel',
+                    onPress: () => setScanned(false),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Go To Link', onPress: () => {
+                        Linking.openURL(data.data).catch((e => {
+                            Alert.alert('Could Not Open The QR/Bar Code Link for', data.data, [
+                                {
+                                    text: 'Ok', onPress: () => {
+                                        setScanned(false)
+                                    }
+                                },
+                            ]);
+                        }))
+                    }
+                },
+            ]);
+        },
+        []
+    );
     return (
         <View style={styles.container}>
             <StatusBar hidden={true}
             />
 
-            {hasPermission ?
+            {camera.hasCameraPermission ?
                 (
-                    <Camera style={{ flex: 1 }} type={type}
-                        onBarCodeScanned={(txt) => {
-                            console.log('bar code scannerd')
+                    focus &&
+                    <Camera
+                        barCodeScannerSettings={{
+                            barCodeTypes: [BarCodeScanner.Constants.BarCodeType.code128],
                         }}
+                        onBarCodeScanned={(txt) => {
+                            if (!scanned) {
+                                setScanned(true)
+                                handleReadCode(txt)
+                            }
+                        }}
+                        type={type}
                         ratio='16:9'
-                        responsiveOrientationWhenOrientationLocked
+                        style={[StyleSheet.absoluteFill, { backgroundColor: 'red' }]}
                     >
-                        <View style={{ flex: 1, }}>
-                            <View style={styles.topView}>
-                                <Header
-                                    isBack={false}
-                                    isScanner={false}
+                        <View style={[StyleSheet.absoluteFill, { justifyContent: 'center', alignItems: 'center' }]}>
+                            <Image source={require('../../assets/images/frame.png')}
+                                style={styles.frameImg}
+                            />
+                            <Pressable
+                                onPress={() => { toggleCameraType() }}
+                                style={styles.rotationImgOpacity}
+                            >
+                                <Image source={require('../../assets/images/switchCamera.png')}
+                                    style={styles.rotationImg}
                                 />
-                            </View>
-                            <View style={styles.scannerTxtContainer}>
-                                <Text style={styles.scannerTxt}>Scan Barcode / QR Code</Text>
-                            </View>
-                            <View style={styles.frameContainer}>
-                                <Image source={require('../../assets/images/frame.png')}
-                                    resizeMode='contain'
-                                    style={styles.frameImg}
-                                />
-                            </View>
+                            </Pressable>
                         </View>
                     </Camera>
                 )
@@ -115,10 +140,10 @@ export default function CodeScanner() {
                     </TouchableOpacity>
                 )
             }
-
         </View>
     );
 }
+
 
 //stylesheet for styling above Design
 const styles = StyleSheet.create({
@@ -166,10 +191,32 @@ const styles = StyleSheet.create({
         fontSize: scale(25)
     },
     frameContainer: {
-        marginVertical: '10%'
+        marginVertical: '10%',
+        backgroundColor: 'red'
     },
     frameImg: {
+        width: scale(300),
+        height: scale(300),
         alignSelf: 'center',
+    },
+    rotationImgOpacity: {
+        width: scale(50),
+        height: scale(50),
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        bottom: 0,
+        right: responsiveFontSize(0.1),
+        margin: responsiveFontSize(7),
+        backgroundColor: 'white',
+        borderRadius: responsiveFontSize(1),
+        padding: responsiveFontSize(1),
+
+    },
+    rotationImg: {
+        width: '100%',
+        height: '100%',
+
+
     }
 
 });

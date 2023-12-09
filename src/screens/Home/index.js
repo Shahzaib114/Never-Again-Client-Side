@@ -65,9 +65,25 @@ const Home = () => {
     async function nav(item) {
         console.log(item)
         let categoryName = item?.name
+        let categoryId = item?.id
+        let orderBy = "createdAt_DESC"
+        let value = ""
+        let first
+        let skip = 0
+
         try {
             await fetchCategories({
-                variables: { categoryName }
+                variables: {
+                    orderBy,
+                    value,
+                    first,
+                    skip,
+                },
+
+                variables: {
+                    categoryName,
+                    categoryId
+                }
             })
         } catch (error) {
             console.error('Error:', error);
@@ -137,7 +153,8 @@ const Home = () => {
                             >
                                 <View style={{ marginTop: responsiveScreenHeight(2) }}>
                                     <Text style={{
-                                        color: "black", fontFamily: 'mrt-rglr'}}>{item.name}</Text>
+                                        color: "black", fontFamily: 'mrt-rglr'
+                                    }}>{item.name}</Text>
                                 </View>
 
                                 <View style={{ backgroundColor: "#BFFF00", width: responsiveScreenWidth(20), height: responsiveScreenHeight(4), alignItems: "center", justifyContent: "center", borderRadius: 10, marginTop: "10%" }}>

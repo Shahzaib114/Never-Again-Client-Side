@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import Header from '../../components/header/Header';
 
@@ -32,41 +32,42 @@ const Proof = () => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ height: responsiveScreenHeight(8) }}>
-                <Header
-                    isBack={true}
-                />
-            </View>
-            <View style={styles.flatlist}>
-                <FlatList
-                    alwaysBounceVertical
-                    showsVerticalScrollIndicator={false}
-                    data={array}
-                    renderItem={({ item }) => {
-                        return (
-                            <Pressable style={styles.itemContainer2}
-                                onPress={() => nav(item.id)}
-                            >
-                                <View style={{ width: responsiveScreenWidth(60), height: responsiveScreenHeight(12), backgroundColor: "red" }}>
-                                    <Image source={item.img} style={{ width: "100%", height: "100%", resizeMode: "cover" }} />
-                                </View>
-                                <View style={{ marginTop: responsiveScreenHeight(2) }}>
-                                    <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>{item.name}</Text>
-                                </View>
+            <ScrollView
+                nestedScrollEnabled
 
-                                <View style={{ backgroundColor: "#BFFF00", width: responsiveScreenWidth(20), height: responsiveScreenHeight(4), alignItems: "center", justifyContent: "center", borderRadius: 10, marginTop: "4%" }}>
-                                    <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>
-                                        View More
-                                    </Text>
-                                </View>
-                            </Pressable>
-                        );
-                    }}
-                    keyExtractor={(item) => {
-                        return item.id;
-                    }}
-                />
-            </View>
+            >
+                <View style={{ height: responsiveScreenHeight(8) }}>
+                    <Header
+                        isBack={true}
+                    />
+                </View>
+                <View style={styles.flatlist}>
+                    <ScrollView>
+                        {array.map((item, index) => {
+                            return (
+                                <Pressable
+                                    key={index}
+                                    style={styles.itemContainer2}
+                                    onPress={() => nav(item.id)}
+                                >
+                                    <View style={{ width: responsiveScreenWidth(60), height: responsiveScreenHeight(12), backgroundColor: "red" }}>
+                                        <Image source={item.img} style={{ width: "100%", height: "100%", resizeMode: "cover" }} />
+                                    </View>
+                                    <View style={{ marginTop: responsiveScreenHeight(2) }}>
+                                        <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>{item.name}</Text>
+                                    </View>
+
+                                    <View style={{ backgroundColor: "#BFFF00", width: responsiveScreenWidth(20), height: responsiveScreenHeight(4), alignItems: "center", justifyContent: "center", borderRadius: 10, marginTop: "4%" }}>
+                                        <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>
+                                            View More
+                                        </Text>
+                                    </View>
+                                </Pressable>
+                            )
+                        })}
+                    </ScrollView>
+                </View>
+            </ScrollView>
         </View>
     )
 }

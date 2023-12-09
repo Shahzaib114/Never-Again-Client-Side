@@ -1,5 +1,4 @@
 import { ApolloProvider } from '@apollo/client';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,8 +9,10 @@ import { Image, View } from 'react-native';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import client from './src/api';
 import NestedNavigator from './src/screens/Bottomtabnested';
+import NearMe from './src/screens/Nearme';
 import BrandDetails from './src/screens/brandsdetails';
 import CodeScanner from './src/screens/cameraScanner/codeScanner';
+import Faqs from './src/screens/faqs';
 import Lock from './src/screens/lock';
 import People from './src/screens/people';
 import Profile from './src/screens/profile';
@@ -19,7 +20,6 @@ import Proof from './src/screens/proof';
 import Question from './src/screens/question';
 import Settings from './src/screens/settings';
 import CustomSplashScreen from './src/screens/splashscreen';
-import NearMe from './src/screens/Nearme';
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
@@ -111,14 +111,14 @@ function BottomTabs() {
             </View>
           )
         }} />
-      <Tab.Screen name='Question' component={Question}
+      <Tab.Screen name='Settings' component={Settings}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(4) }}>
               {focused ?
-                <AntDesign name="questioncircle" size={responsiveFontSize(3)} color="#BFFF00" />
+                <Ionicons name="settings" size={responsiveFontSize(3)} color="#BFFF00" />
                 :
-                <AntDesign name="questioncircleo" size={responsiveFontSize(3)} color="black" />
+                <Ionicons name="settings-outline" size={responsiveFontSize(3)} color="black" />
               }
             </View>
           )
@@ -153,6 +153,7 @@ const App = () => {
             <Stack.Screen name='People' component={People} />
             <Stack.Screen name='Settings' component={Settings} />
             <Stack.Screen name='NearMe' component={NearMe} />
+            <Stack.Screen name='Faqs' component={Faqs} />
           </Stack.Navigator>
         </NavigationContainer>
       </ApolloProvider>

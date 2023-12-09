@@ -9,7 +9,7 @@ const Header = ({
 }) => {
   const navigation = useNavigation()
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}>
+    <View style={{ alignItems: "center", justifyContent: "space-between" }}>
       <View style={{ flexDirection: "row", width: responsiveScreenWidth(90), justifyContent: "space-between", alignItems: "center" }}>
         {isBack ?
           (
@@ -27,10 +27,6 @@ const Header = ({
             <TouchableOpacity style={{ width: responsiveScreenWidth(8), height: responsiveScreenHeight(6) }}>
               <Image source={require('../../../src/assets/images/neveragainLogo.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
             </TouchableOpacity>
-
-            // <TouchableOpacity style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(4) }}>
-            //   <Image source={require('../../../src/assets/images/neveragainLogo.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
-            // </TouchableOpacity>
           )
         }
         <View style={{ flexDirection: "row", width: responsiveScreenWidth(30), justifyContent: "space-around" }}>
@@ -38,18 +34,6 @@ const Header = ({
             style={{ backgroundColor: 'white', borderRadius: responsiveFontSize(30) }}
           >
             <Image source={require('../../../src/assets/images/search.png')}
-              style={{
-                width: responsiveScreenWidth(6),
-                height: responsiveScreenHeight(3),
-                margin: responsiveFontSize(1.3),
-                resizeMode: "contain",
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => { navigation.navigate('Settings') }}
-            style={{ backgroundColor: 'white', borderRadius: responsiveFontSize(30) }}>
-            <Image source={require('../../../src/assets/images/setting.png')}
               style={{
                 width: responsiveScreenWidth(6),
                 height: responsiveScreenHeight(3),
