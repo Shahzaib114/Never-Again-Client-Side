@@ -45,29 +45,29 @@ export const approvedBrandDetails = gql`
     }
   `
 export const brands = gql`
-    query GetBrands(
-      $orderBy: BrandOrderByInput
-      $value: String
-      $first: Int
-      $skip: Int
-    ) {
-      brands(
-        orderBy: $orderBy
-        first: $first
-        skip: $skip
-        where: { name_contains: $value }
-      ) {
-        id
-        description
-        name
-        icon {
-          url
-        }
-        path
-      }
+query GetBrands(
+  $orderBy: BrandOrderByInput
+  $value: String
+  $first: Int
+  $skip: Int
+) {
+  brands(
+    orderBy: $orderBy
+    first: $first
+    skip: $skip
+    where: { name_contains: $value }
+  ) {
+    id
+    description
+    name
+    icon {
+      url
     }
-  `
-export const brandDetails = gql`
+    path
+  }
+}
+`
+export const brandDetailsById = gql`
     query getBrands($id: ID) {
       brand(where: { id: $id }) {
         id

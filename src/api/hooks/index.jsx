@@ -8,7 +8,7 @@ import {
   useLazyQuery,
   useQuery,
 } from "@apollo/client";
-import { categories, exploreCategoriesByName } from "../schema/queries";
+import { brandDetailsById, brands, categories, exploreCategoriesByName, scanBrands } from "../schema/queries";
 const client = new ApolloClient({
   link: createHttpLink({ uri: 'https://api-eu-west-2.hygraph.com/v2/clolfekda891n01uqbbqrev99/master' }),
   cache: new InMemoryCache(),
@@ -72,10 +72,10 @@ export function approvedBrandDetails(props: ID): Response {
 
 // Brands
 
-export function useBrands(props: any): Response {
+export function useBrands(props) {
   try {
     let { orderBy, value, first, skip } = props;
-    const { loading, error, data, refetch } = useQuery(schema.brands, {
+    const { loading, error, data, refetch } = useQuery(brands, {
       variables: {
         orderBy,
         first,
@@ -83,21 +83,38 @@ export function useBrands(props: any): Response {
         ...(value && value.length > 2 ? { value } : { value: "" }), // Only include value if it meets certain criteria
       },
     });
+    if (loading) {
+      return { brandsLoading: true, brandsError: null, brandsData: null };
+    }
 
-    return { loading, error, data, refetch };
+    if (error) {
+      return { brandsLoading: false, brandsError: 'An error occurred while fetching categoriesData', brandsData: null };
+    }
+
+    return { brandsLoading: false, brandsError: null, brandsData: data };
   } catch (err) {
     console.error("Error in useBrands:", err);
-    return { loading: false };
+    return { brandsLoading: false };
   }
 }
 
-export function brandDetails(props: ID): Response {
+export function brandDetails(ID) {
+  let id = ID.id
   try {
-    let { id } = props;
-    const { loading, error, data } = useQuery(schema.brandDetails, {
+
+    const { loading, error, data } = useQuery(brandDetailsById, {
       variables: { id },
     });
-    return { loading, error, data };
+    if (loading) {
+      return { brandLoading: true, brandError: null, brandData: null };
+    }
+
+    if (error) {
+      return { brandLoading: false, brandError: 'An error occurred while fetching categoriesData', brandData: null };
+    }
+
+    return { brandLoading: false, brandError: null, brandData: data };
+
   } catch (err) {
     getCategoryPeoples;
     console.log("error", err);
@@ -121,34 +138,6 @@ export function getCategories() {
   // Data state
   // console.log('GraphQL categoriesData:', data);
   return { loading: false, error: null, categoriesData: data };
-}
-
-// export function getCategories(): Response {
-
-//   try {
-//     const data = useQuery(categories);
-//     console.log(data.data)
-//     return data
-//   } catch (err) {
-//     console.log("error", err);
-//     return { loading: false };
-//   }
-// }
-
-export async function getCategoriesByName(categoryName: any) {
-  console.log('cnsdkbcs', categoryName)
-  try {
-    const data = await client.query(
-      {
-        query: exploreCategoriesByName,
-        variables: { categoryName },
-      });
-    console.log(data)
-    return { detailedCatergoryLoading: false, detailedCatergoryerror: null, detailedCatergoryData: data };
-  } catch (err) {
-    console.log("error", err);
-    return { detailedCatergoryLoading: false };
-  }
 }
 export function exploreApprovedCategories(categoryId: string): Response {
   try {
@@ -256,9 +245,9 @@ export function brandsNearMe({
   }
 }
 
-export function getScannedBrands({ value }: any) {
+export function getScannedBrands({ value }) {
   try {
-    const { loading, error, data, refetch } = useQuery(schema.scanBrands, {
+    const { loading, error, data, refetch } = useQuery(scanBrands, {
       variables: {
         value,
       },
@@ -270,6 +259,7 @@ export function getScannedBrands({ value }: any) {
     return { loading: false };
   }
 }
+
 
 export function getBrandCount() {
   console.log('i am inside get brands')

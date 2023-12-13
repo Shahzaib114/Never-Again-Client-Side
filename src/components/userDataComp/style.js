@@ -15,11 +15,12 @@ const styles = StyleSheet.create({
     },
     imgStyle: {
         width: "100%",
-        height: "100%"
+        height: "100%",
     },
     detailContainer: {
         justifyContent: 'center',
-        marginHorizontal: responsiveScreenWidth(2)
+        marginHorizontal: responsiveScreenWidth(2),
+        width:'60%',
     },
     titleTxt: {
         color: COLORS.blackColor,

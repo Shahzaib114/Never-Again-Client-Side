@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
-import LightColors from '../../utility/colors/LightColors'
+import { COLORS } from '../../utility/colors/LightColors'
 
 const Settings = () => {
   const navigation = useNavigation();
@@ -26,7 +26,7 @@ const Settings = () => {
             <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
               <Image source={require('../../../src/assets/images/workplace.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
             </View>
-            <Text style={{ color: LightColors.blackColor, fontFamily: 'mrt-rglr', textAlign: "center", fontSize: 16, marginLeft: "5%" }}>Near Me</Text>
+            <Text style={{ color: COLORS.blackColor, fontFamily: 'mrt-rglr', textAlign: "center", fontSize: 16, marginLeft: "5%" }}>Near Me</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }}>
             <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>

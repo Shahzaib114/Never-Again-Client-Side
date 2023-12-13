@@ -1,109 +1,95 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { useNavigation } from '@react-navigation/native'
-import Header from '../../components/header/Header'
+import React, { useEffect, useState } from 'react'
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
+import { brandDetails } from '../../api/hooks'
+import UserProfile from '../../components/userDataComp/UserData'
 
-const BrandDetails = () => {
+const BrandDetails = ({ route }) => {
 
     const navigation = useNavigation();
+    let { brandLoading, brandError, brandData } = brandDetails({
+        id: route?.params?.brandId,
+    });
+    const [myBrandDetails, setMyBrandDetails] = useState()
 
-    const data = [
-        {
-            id: 1,
-            name: "Latest"
-        },
-        {
-            id: 2,
-            name: "Clothes"
-        },
-        {
-            id: 3,
-            name: "App"
-        },
-        {
-            id: 4,
-            name: "Snack"
-        },
-        {
-            id: 5,
-            name: "Technology"
-        },
-    ]
-    return (
-        <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ height: responsiveScreenHeight(8) }}>
-                <Header
-                    isBack={true}
-                />
-            </View>
-            <View style={{ alignItems: "center", marginLeft: responsiveScreenWidth(5) }}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {data.map((item) => (
+    useEffect(() => {
+        setMyBrandDetails(brandData?.brand)
+    }, [brandData])
 
-                        <View key={item.id}>
-                            <TouchableOpacity
-                                style={
-                                    styles.itemContainer
-                                }
-                                key={item.id}
-                            >
-                                <Text style={styles.titleText}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
+    if (myBrandDetails) {
+        return (
+            <View style={{ flex: 1, backgroundColor: "white" }}>
+                <ScrollView style={{ marginVertical: responsiveScreenHeight(1) }}>
+                    <View style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: responsiveScreenHeight(2),
+                        marginLeft: responsiveScreenWidth(6),
+                        width: '60%',
+                        alignSelf: 'flex-start'
+                    }}>
+                        <TouchableOpacity style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
+                            onPress={() => navigation.goBack()}
+                        >
+                            <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+                        </TouchableOpacity>
+                        <Text style={{ textAlign: "center", fontFamily: 'mrt-mid' }}>{myBrandDetails.name}</Text>
+                    </View>
+                    <View style={{ marginTop: responsiveScreenHeight(3) }}>
+                        <UserProfile
+                            name={myBrandDetails.name}
+                            role={''}
+                        />
+                    </View>
+
+                    <View style={{ alignItems: "center", marginTop: responsiveScreenHeight(2), }}>
+                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
+                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                Description
+                            </Text>
                         </View>
-
-
-                    ))}
+                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
+                            <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.5), fontFamily: 'mrt-rglr' }}>
+                                {myBrandDetails.description}
+                            </Text>
+                        </View>
+                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
+                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                Specialities
+                            </Text>
+                        </View>
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            alignSelf: 'baseline',
+                            left: '5%'
+                        }}>
+                            {myBrandDetails?.linking?.map((i, index) => {
+                                return (
+                                    <TouchableOpacity
+                                        key={index}
+                                        style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                        onPress={() => navigation.navigate('Proof')}
+                                    >
+                                        <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
+                                            {i.name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                )
+                            })}
+                        </View>
+                        <View style={{ flexDirection: "row", marginTop: responsiveScreenHeight(2) }}>
+                            <Text style={{ fontFamily: 'mrt-mid', }}>Alternative:</Text><Text>No alternatives researched yet. Help us out!</Text>
+                        </View>
+                    </View>
                 </ScrollView>
             </View>
-            <View>
-                <Text style={{ color: "black", fontFamily: 'mrt-rglr', fontSize: responsiveScreenFontSize(2), margin: "4%" }}>
-                    Latest Brand
-                </Text>
-            </View>
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
-                <View style={{ backgroundColor: "#D9D9D9", width: responsiveScreenWidth(90), height: responsiveScreenHeight(8), borderRadius: 10 }}>
-
-                </View>
-            </View>
-            <View style={{ alignItems: "center", marginTop: responsiveScreenHeight(5) }}>
-                <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                    <Text style={{ color: "black", fontFamily: 'mrt-rglr', fontSize: responsiveScreenFontSize(1.5) }}>
-                        Galaxy Chocolate
-                    </Text>
-                </View>
-                <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                    <Text style={{ color: "black", fontFamily: 'mrt-rglr', fontSize: responsiveScreenFontSize(1.5) }}>
-                        Galaxy Chocolate is owned by Mars corporation
-                    </Text>
-                </View>
-                <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                    <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.5), fontFamily: 'mrt-rglr' }}>
-                        We Beleive everyone choose deserves to choose pleasue with great tatsing chocolate,and we know that each piece of rich,creamy Galaxy choclate is an expression of effortless pleasures.
-                        So,we've decided to offer the nation a choclate amnesty.Send us your unwanted Dairy milk and we will swap it for a Galaxy .Of course,all
-                        unwanted choclate will be donated to good cause.Galaxy part of Mars"^Apart from innocent Palestinian people.
-                        {'\n\n'}
-                        Dont eat Galaxy,Don't share it,Dont't buy it.
-                        {'\n\n'}
-                        Alternatives
-                        {'\n'}
-                        No alternative researched yet.Help us out!
-                    </Text>
-                </View>
-            </View>
-            <View style={{ margin: "5%" }}>
-                <TouchableOpacity style={{ backgroundColor: "#BFFF00", width: responsiveScreenWidth(22), height: responsiveScreenHeight(5), borderRadius: 10, alignItems: "center", justifyContent: "center" }}
-                    onPress={() => navigation.navigate('Proof')}
-                >
-                    <Text style={{ color: "black" }}>
-                        Proof
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({

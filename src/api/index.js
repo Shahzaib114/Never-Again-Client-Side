@@ -32,7 +32,7 @@ const client = new ApolloClient({
   // uri: 'https://api-eu-west-2.hygraph.com/v2/clolfekda891n01uqbbqrev99/master',
   link: authLink.concat(httpLink), // Chain it with the HttpLink
   cache: new InMemoryCache(),
-  defaultOptions: defaultOptions
+  // defaultOptions: defaultOptions
 });
 
 export default client

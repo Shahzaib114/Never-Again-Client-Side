@@ -3,8 +3,8 @@
 export const COLORS = {
     whiteColor: '#FFFFFF',
     blackColor: '#000000',
-    primaryColor: '#1f3a61',
-    lightPrimaryColor: '#7d8ca1',
+    primaryColor: '#BFFF00',
+    lightPrimaryColor: '#72f213',
     secondaryColor: '#f9b041',
     afterClickColor: '#b57f14',
     mustardColor: '#FC0808',

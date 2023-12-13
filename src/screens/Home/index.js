@@ -1,21 +1,34 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { responsiveScreenWidth, responsiveScreenHeight, responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import { useNavigation } from '@react-navigation/native';
-import { approvedBrandDetails, getBrandCount, getCategories, getCategoriesByName } from '../../api/hooks';
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { approvedBrands, categories, exploreCategoriesByName } from '../../api/schema/queries';
-import CodeScanner from '../cameraScanner/codeScanner';
+import { useLazyQuery } from '@apollo/client';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
+import { getCategories, useBrands } from '../../api/hooks';
+import { exploreCategoriesByName } from '../../api/schema/queries';
 import Header from '../../components/header/Header';
-
+import UserProfile from '../../components/userDataComp/UserData';
+import { COLORS } from '../../utility/colors/LightColors';
 
 
 const numColumns = 2;
 const Home = () => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [currentBrand, setCurrentBrand] = useState('Latest Brands')
+    const [selectedItem, setSelectedItem] = useState(null);
+    const focus = useIsFocused()
     const { loading, error, categoriesData } = getCategories();
-    const [fetchCategories, { loadincg, errosar, data }] = useLazyQuery(exploreCategoriesByName);
-    // const { detailedCatergoryLoading, detailedCatergoryerror, detailedCatergoryData } = getCategoriesByName();
+    const [fetchCategory, { categoryLoading, categoryData }] = useLazyQuery(exploreCategoriesByName)
+    let { brandsLoading, brandsError, brandsData, refetch } = useBrands({
+        orderBy: "createdAt_DESC",
+        value: "",
+        first: 50,
+        skip: 0,
+    });
+
     const [myData, setMyData] = useState([])
+    const [myLatestBrands, setMyLatestBrands] = useState([])
+
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -23,78 +36,47 @@ const Home = () => {
     }, [categoriesData])
 
     useEffect(() => {
-        console.log('detailedCatergoryData', data)
-    }, [data])
-
-
-    const array = [
-        {
-            id: 0,
-            name: 'Galaxy Chocolate'
-        },
-        {
-            id: 1,
-            name: 'Galaxy Chocolate'
-        },
-        {
-            id: 2,
-            name: 'Galaxy Chocolate'
-        },
-        {
-            id: 3,
-            name: 'Galaxy Chocolate'
-        },
-        {
-            id: 4,
-            name: 'Galaxy Chocolate'
-        },
-        {
-            id: 5,
-            name: 'Galaxy Chocolate'
-        },
-        {
-            id: 6,
-            name: 'Galaxy Chocolate'
-        },
-        {
-            id: 7,
-            name: 'Galaxy Chocolate'
-        },
-    ]
-
-    async function nav(item) {
-        console.log(item)
-        let categoryName = item?.name
-        let categoryId = item?.id
-        let orderBy = "createdAt_DESC"
-        let value = ""
-        let first
-        let skip = 0
-
-        try {
-            await fetchCategories({
-                variables: {
-                    orderBy,
-                    value,
-                    first,
-                    skip,
-                },
-
-                variables: {
-                    categoryName,
-                    categoryId
-                }
-            })
-        } catch (error) {
-            console.error('Error:', error);
+        if (brandsData?.brands) {
+            setMyLatestBrands(brandsData?.brands)
         }
+    }, [brandsData])
+
+    const nav = async (item) => {
+        let categoryName = item?.name
+        setCurrentBrand(categoryName)
+        let value = ""
+        setIsLoading(true)
+        const res = await fetchCategory({
+            variables: {
+                categoryName: categoryName,
+                first: 10,
+                ...(value && value.length > 2 ? { value } : { value: "" }),
+            },
+        })
+        setMyLatestBrands(res?.data?.brands)
+        setIsLoading(false)
     }
+
     return (
         <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ height: responsiveScreenHeight(8) }}>
+            <View style={{ height: responsiveScreenHeight(8), backgroundColor: "#BFFF00" }}>
                 <Header
                     isBack={false}
                 />
+            </View>
+            <View style={{ height: responsiveScreenHeight(8), backgroundColor: "#BFFF00" }}>
+                <View style={{ marginLeft: responsiveScreenWidth(5) }}>
+                    <Text style={{ color: COLORS.blackColor, fontSize: responsiveScreenFontSize(3), fontFamily: "mrt-mid" }}>Let’s find Which{'\n'}Product to Use!</Text>
+                </View>
+            </View>
+            <View style={{ height: responsiveScreenHeight(8), backgroundColor: "#BFFF00", borderBottomLeftRadius: 20, borderBottomRightRadius: 20, alignItems: "center", justifyContent: "center" }}>
+                <TouchableOpacity style={{ backgroundColor: "white", padding: 8, width: responsiveScreenWidth(70), borderRadius: 10, flexDirection: 'row', alignItems: 'center' }}>
+                    <TextInput
+                        placeholder="Search"
+                        style={{ flex: 1, paddingLeft: 10 }} // Adjust paddingLeft as needed
+                    />
+                    <FontAwesome name="search" size={15} color="black" />
+                </TouchableOpacity>
             </View>
             <View style={{ alignItems: "center", marginLeft: responsiveScreenWidth(5) }}>
                 {loading ?
@@ -109,22 +91,23 @@ const Home = () => {
                             {myData?.map((item) => (
 
                                 <View key={item.id}>
+
                                     <TouchableOpacity
                                         onPress={() => {
-                                            console.log(item)
+                                            setSelectedItem(item)
                                             nav(item)
                                         }}
                                         style={
-                                            styles.itemContainer
+                                            [styles.itemContainer, { backgroundColor: selectedItem === item ? COLORS.lightPrimaryColor : COLORS.whiteColor, }]
                                         }
                                         key={item.id}
                                     >
+
                                         <Text style={styles.titleText}>
                                             {item.name}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
-
 
                             ))}
                         </ScrollView>
@@ -133,44 +116,58 @@ const Home = () => {
             </View>
             <View>
                 <Text style={{
-                    color: "black", fontFamily: 'mrt-rglr', fontSize: responsiveScreenFontSize(2), margin: "4%"
+                    color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(3), margin: "2%", marginHorizontal: '4%'
                 }}>
-                    Latest Brand
+                    {currentBrand}
                 </Text>
             </View>
-            <View style={styles.flatlist}>
-                <FlatList
-                    alwaysBounceVertical
-                    showsVerticalScrollIndicator={false}
-                    data={array}
-                    renderItem={({ item }) => {
-                        return (
-                            <TouchableOpacity style={styles.itemContainer2}
-                                onPress={() => {
-                                    nav(item)
-                                    navigation.navigate('BrandDetails')
-                                }}
-                            >
-                                <View style={{ marginTop: responsiveScreenHeight(2) }}>
-                                    <Text style={{
-                                        color: "black", fontFamily: 'mrt-rglr'
-                                    }}>{item.name}</Text>
-                                </View>
+            {isLoading ?
+                (
+                    <View>
+                        <ActivityIndicator></ActivityIndicator>
+                    </View>
 
-                                <View style={{ backgroundColor: "#BFFF00", width: responsiveScreenWidth(20), height: responsiveScreenHeight(4), alignItems: "center", justifyContent: "center", borderRadius: 10, marginTop: "10%" }}>
-                                    <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>
-                                        View More
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        );
-                    }}
-                    keyExtractor={(item) => {
-                        return item.id;
-                    }}
-                    numColumns={numColumns}
-                />
-            </View>
+                )
+                :
+                (
+                    myLatestBrands.length != 0 ?
+                        (
+                            <ScrollView alwaysBounceVertical showsHorizontalScrollIndicator={false}>
+                                {myLatestBrands.map((item) => (
+                                    <TouchableOpacity key={item.id} style={{
+                                        backgroundColor: COLORS.lightPrimaryColor,
+                                        marginBottom: responsiveScreenFontSize(0.5),
+                                        width: '95%',
+                                        alignSelf: 'center',
+                                        borderRadius: responsiveScreenFontSize(1)
+                                    }}
+                                        onPress={() => {
+                                            navigation.navigate('BrandDetails', {
+                                                brandId: item.id
+                                            })
+                                        }}
+                                    >
+                                        <UserProfile
+                                            name={item.path}
+                                            role={item.name}
+                                            navigateIcon={true}
+                                        />
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+
+                        )
+                        :
+                        (
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.titleText}>
+                                    No Available Brands
+                                </Text>
+                            </View>
+                        )
+
+                )
+            }
         </View >
     )
 }
@@ -178,7 +175,6 @@ const Home = () => {
 const styles = StyleSheet.create({
     itemContainer: {
         margin: 6,
-        backgroundColor: 'white',
         alignItems: "center",
         justifyContent: "center",
         padding: 9,
@@ -191,13 +187,14 @@ const styles = StyleSheet.create({
         }),
     },
     itemContainer2: {
-        margin: 9,
-        width: responsiveScreenWidth(40),
-        height: responsiveScreenHeight(16),
-        alignItems: "center",
-        justifyContent: "center",
+        margin: 6,
         backgroundColor: 'white',
-        borderRadius: 8,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 10,
+        width: responsiveScreenWidth(90),
+        borderRadius: 10,
         overflow: 'hidden',
         ...Platform.select({
             android: {
@@ -206,6 +203,16 @@ const styles = StyleSheet.create({
         }),
     },
     titleText: {
+        fontSize: responsiveScreenFontSize(2),
+        color: "black",
+        fontFamily: 'mrt-rglr'
+    },
+    titleText2: {
+        fontSize: responsiveScreenFontSize(2),
+        color: "black",
+        fontFamily: 'mrt-mid'
+    },
+    titleText3: {
         fontSize: responsiveScreenFontSize(2),
         color: "black",
         fontFamily: 'mrt-rglr'

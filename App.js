@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,74 +16,82 @@ import CodeScanner from './src/screens/cameraScanner/codeScanner';
 import Faqs from './src/screens/faqs';
 import Lock from './src/screens/lock';
 import People from './src/screens/people';
-import Profile from './src/screens/profile';
+import { default as Alternative, default as Profile } from './src/screens/profile';
 import Proof from './src/screens/proof';
 import Question from './src/screens/question';
 import Settings from './src/screens/settings';
 import CustomSplashScreen from './src/screens/splashscreen';
+import { COLORS } from './src/utility/colors/LightColors';
+import Sellouts from './src/screens/Bottomtabnested/sellouts/Sellout';
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        headerShown: false,
 
+      screenOptions={{
+        tabBarActiveTintColor: COLORS.greenColor,
+        tabBarInactiveTintColor: COLORS.blackColor,
+        tabBarShowLabel: true,
+        tabBarLabelStyle: { fontFamily: "mrt-rglr", fontSize: responsiveFontSize(1.3), alignSelf: 'center', textAlign: 'center' },
+        headerShown: false,
+        tabBarIconStyle: { justifyContent: 'center', alignSelf: 'center' },
         tabBarItemStyle: {
-          borderTopRightRadius: 10,
-          borderTopLeftRadius: 10,
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10,
-          marginTop: '1%',
-          marginBottom: "1%",
-          marginLeft: "1%"
+          alignItems: 'center',
+          alignContent: 'center',
+          alignSelf: 'center',
+          marginVertical: '2%',
         },
+        barStyle: { backgroundColor: '#F2F2F2' },
         tabBarStyle: {
           height: responsiveScreenHeight(6.5),
+          justifyContent: 'center',
+          alignItems: 'center'
         },
       }}
       initialRouteName='Home'
     >
       <Tab.Screen name='Home' component={NestedNavigator}
+
         options={{
+          tabBarShowLabel: true,
           tabBarIcon: ({ focused }) => (
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(4) }}>
-              {focused ?
-                <Ionicons name="home" size={responsiveFontSize(3)} color="#BFFF00" />
-                :
-                <Ionicons name="home-outline" size={responsiveFontSize(3)} color="black" />
-              }
-            </View>
+            focused ?
+              <Ionicons name="home" size={responsiveFontSize(3)} color="#BFFF00" />
+              :
+              <Ionicons name="home-outline" size={responsiveFontSize(3)} color="black" />
           )
         }} />
-      <Tab.Screen name='Profile' component={Profile}
+      <Tab.Screen name='Alternative' component={Alternative}
+
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(4) }}>
-              {focused ?
-                <FontAwesome name="bookmark" size={responsiveFontSize(3)} color="#BFFF00" />
-                :
-                <FontAwesome name="bookmark-o" size={responsiveFontSize(3)} color="black" />
-              }
-            </View>
+            focused ?
+              <AntDesign name="checksquare" size={responsiveFontSize(3)} color="#BFFF00" />
+              :
+              <AntDesign name="check" size={responsiveFontSize(3)} color="black" />
           )
         }} />
 
-      <Tab.Screen name='CodeScanner' component={CodeScanner}
+      <Tab.Screen name='Scan' component={CodeScanner}
         options={{
-
-          tabBarIcon: ({ focused }) => (
+          tabBarShowLabel: true,
+          tabBarItemStyle: {
+          },
+          tabBarLabelStyle: {
+            bottom: responsiveScreenHeight(0.5),
+            fontSize: responsiveFontSize(1.5),
+            fontFamily: 'mrt-rglr'
+          },
+          tabBarIcon: () => (
             <View
-
               style={{
-                bottom: responsiveScreenHeight(5),
+                bottom: responsiveScreenHeight(3),
                 borderRadius: responsiveFontSize(30),
               }}>
               <View style={{
                 backgroundColor: '#BFFF00',
                 borderRadius: responsiveFontSize(20),
-                margin: 20
               }}>
                 <Image
                   hitSlop={responsiveFontSize(10)}
@@ -99,28 +108,23 @@ function BottomTabs() {
             </View>
           )
         }} />
-      <Tab.Screen name='Lock' component={Lock}
+      <Tab.Screen name='BoYcot' component={Lock}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(4) }}>
-              {focused ?
-                <Ionicons name="lock-closed" size={responsiveFontSize(3)} color="#BFFF00" />
-                :
-                <Ionicons name="lock-closed-outline" size={responsiveFontSize(3)} color="black" />
-              }
-            </View>
+            focused ?
+              <Entypo name="squared-cross" size={responsiveFontSize(3)} color="#BFFF00" />
+              :
+              <Entypo name="cross" size={responsiveFontSize(3)} color="black" />
+
           )
         }} />
-      <Tab.Screen name='Settings' component={Settings}
+      <Tab.Screen name='Sellouts' component={Sellouts}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(4) }}>
-              {focused ?
-                <Ionicons name="settings" size={responsiveFontSize(3)} color="#BFFF00" />
-                :
-                <Ionicons name="settings-outline" size={responsiveFontSize(3)} color="black" />
-              }
-            </View>
+            focused ?
+              <Ionicons name="golf" size={responsiveFontSize(3)} color="#BFFF00" />
+              :
+              <Ionicons name="golf-outline" size={responsiveFontSize(3)} color="black" />
           )
         }} />
 
