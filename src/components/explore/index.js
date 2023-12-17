@@ -1,10 +1,15 @@
-import { View, Text, TouchableOpacity, Image, ImageBackground } from 'react-native'
-import React from 'react'
-import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
-import { COLORS } from '../../utility/colors/LightColors'
+import Entypo from '@expo/vector-icons/Entypo';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { responsiveFontSize, responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
+import { COLORS } from '../../utility/colors/LightColors';
 
-
-const ExploreView = ({ imageSource }) => {
+const ExploreView = ({
+    imageSource = 'https://media.graphassets.com/kMTtw82jTYWxOY837WGK',
+    displayText,
+    onPress,
+    iconName = 'check',
+}) => {
     return (
         <View style={{ flex: 1, backgroundColor: "white" }}>
             <View style={{
@@ -12,7 +17,8 @@ const ExploreView = ({ imageSource }) => {
                 borderWidth: 1,
                 padding: 3,
                 borderColor: "#BFFF00",
-                alignItems: "center"
+                alignItems: "center",
+                justifyContent: 'center'
             }}>
 
                 {imageSource && (
@@ -22,25 +28,35 @@ const ExploreView = ({ imageSource }) => {
                         justifyContent: 'center',
                         borderRadius: 4,
                     }}>
-                        <ImageBackground source={imageSource} style={{
-                            width: "100%",
-                            height: "100%",
-                            resizeMode: "contain", borderRadius: 6, alignItems: 'center'
-                        }}
-                            imageStyle={{ borderRadius: responsiveFontSize(1) }}
-                        >
-                            <Text
-                                style={{ backgroundColor: COLORS.primaryColor, padding: responsiveFontSize(0.7), borderRadius: responsiveFontSize(0.7), marginTop: responsiveFontSize(-1) }}
-                            >Prefumes</Text>
-                        </ImageBackground>
+                        <Text
+                            style={{
+                                backgroundColor: COLORS.primaryColor,
+                                padding: responsiveFontSize(0.7),
+                                alignSelf: 'center',
+                                borderRadius: responsiveFontSize(0.7),
+                                marginTop: responsiveFontSize(-1),
+                                fontFamily: 'mrt-mid'
+                            }}
+                        >{displayText}</Text>
+                        <Entypo name={iconName} size={responsiveFontSize(4.5)} color="black" style={{ marginHorizontal: responsiveFontSize(1), alignSelf: 'center' }} />
                     </View>
 
                 )}
             </View>
 
             <View style={{ marginTop: responsiveScreenHeight(0.5) }}>
-                <TouchableOpacity style={{ backgroundColor: "#BFFF00", width: responsiveScreenWidth(25), height: responsiveScreenHeight(4), borderRadius: 6, alignItems: "center", justifyContent: "center" }}>
-                    <Text>Explore Now</Text>
+                <TouchableOpacity style={{
+                    backgroundColor: "#BFFF00",
+                    width: responsiveScreenWidth(25),
+                    height: responsiveScreenHeight(4),
+                    borderRadius: 6,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignSelf: 'center'
+                }}
+                    onPress={onPress}
+                >
+                    <Text style={styles.desciptionTxt}>Explore Now</Text>
                 </TouchableOpacity>
 
             </View>
@@ -48,5 +64,18 @@ const ExploreView = ({ imageSource }) => {
         </View>
     )
 }
+const styles = StyleSheet.create({
+    titleText: {
+        fontSize: responsiveScreenFontSize(2),
+        color: "black",
+        fontFamily: 'mrt-rglr'
+    },
+    desciptionTxt: {
+        color: "black",
+        fontSize: responsiveScreenFontSize(1.5),
+        fontFamily: 'mrt-rglr'
+    },
+
+})
 
 export default ExploreView

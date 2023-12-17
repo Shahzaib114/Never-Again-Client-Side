@@ -8,6 +8,11 @@ const styles = StyleSheet.create({
         color: "black",
         fontFamily: 'mrt-mid'
     },
+    titleText2: {
+        fontSize: responsiveScreenFontSize(2),
+        color: "black",
+        fontFamily: 'mrt-mid'
+    },
     descriptionText: {
         fontSize: responsiveScreenFontSize(1.8),
         color: "black",
@@ -21,7 +26,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-around',
         flexDirection: 'row',
-        // backgroundColor: 'red'
     },
     childContainer: {
         width: '100%',

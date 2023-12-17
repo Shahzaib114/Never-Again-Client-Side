@@ -7,7 +7,7 @@ import { responsiveFontSize } from 'react-native-responsive-dimensions';
 const UserProfile = ({
     name = 'Gel Gadot',
     role = 'Celerbity',
-    img = 'https://media.graphassets.com/xthbFJPDQD6q3pYUjXrq',
+    img = 'https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png',
     imgContainerProp,
     containerProp,
     navigateIcon = false,
@@ -15,7 +15,8 @@ const UserProfile = ({
     return (
         <View style={[containerProp, styles.container]}>
             <View style={[{ imgContainerProp }, styles.imageContainer]}>
-                <Image source={require('../../../src/assets/images/user.png')}
+                <Image
+                    source={{ uri: img }}
                     resizeMode='contain'
                     style={styles.imgStyle} />
             </View>

@@ -33,6 +33,7 @@ export const approvedBrandDetails = gql`
         description
         subTitle
         instructions
+        shopLink
         icon {
           url
         }
@@ -58,12 +59,12 @@ query GetBrands(
     where: { name_contains: $value }
   ) {
     id
-    description
+    subTitle
     name
+    path
     icon {
       url
     }
-    path
   }
 }
 `
@@ -102,6 +103,9 @@ export const categories = gql`
       categories(first: 100, orderBy: createdAt_DESC) {
         id
         name
+        icon {
+          url
+        }
       }
     }
   `
@@ -120,6 +124,7 @@ export const exploreCategoriesByName = gql`
       ) {
         id
         name
+        subTitle
         icon {
           url
         }
@@ -201,9 +206,9 @@ export const getPeople = gql`
         where: { _search: $value }
       ) {
         name
-        id
-        description
         dateOfBirth
+        detail
+        description
         profileUrl
         profilePhoto {
           id
@@ -239,28 +244,32 @@ export const brandsNearMe = gql`
     }
   `
 export const scanBrands = gql`
-  query getScannedBrands($value: String) {
-    brands(
-      orderBy: createdAt_ASC
-      first: 100000
-      where: {
-        OR: [
-          { name_contains: $value }
-          { description_contains: $value }
-          { subTitle_contains: $value }
-          { descriptionSmall_contains: $value }
-        ]
-      }
-    ) {
-      id
-      description	
-      name
-      icon {
-        url
-      }
-      path
+query getScannedBrands($name: String, $brand: String, $barcode: [Float!]) {
+  brands(
+    orderBy: createdAt_ASC
+    first: 100000
+    where: {
+      OR: [
+        { barcodes_contains_some: $barcode }
+        { name_contains: $name }
+        { description_contains: $brand }
+        { subTitle_contains: $brand }
+        { descriptionSmall_contains: $brand }
+        { path_contains: $brand }
+      ]
     }
+  ) {
+    id
+    barcodes
+    description
+    name
+    icon {
+      url
+    }
+    path
   }
+}
+
   `
 export const brandCount = gql`
     query getBrandCount {

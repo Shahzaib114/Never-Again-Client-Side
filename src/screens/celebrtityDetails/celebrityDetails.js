@@ -2,20 +2,19 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
-import { brandDetails } from '../../api/hooks'
+import { GetapprovedBrandDetailsById, brandDetails, getCategoryPeopleById } from '../../api/hooks'
 import UserProfile from '../../components/userDataComp/UserData'
 
-const BrandDetails = ({ route }) => {
+const CelebrityDetails = ({ route }) => {
 
     const navigation = useNavigation();
-    let { brandLoading, brandError, brandData } = brandDetails({
-        id: route?.params?.brandId,
-    });
     const [myBrandDetails, setMyBrandDetails] = useState()
 
     useEffect(() => {
-        setMyBrandDetails(brandData?.brand)
-    }, [brandData])
+        if (route?.params) {
+            setMyBrandDetails(route?.params?.data)
+        }
+    }, [])
 
     if (myBrandDetails) {
         return (
@@ -23,14 +22,14 @@ const BrandDetails = ({ route }) => {
                 <ScrollView style={{ marginVertical: responsiveScreenHeight(1) }}>
                     <View style={{
                         flexDirection: "row",
-                        gap: responsiveScreenWidth(2),
+                        justifyContent: "space-between",
                         alignItems: "center",
                         marginTop: responsiveScreenHeight(2),
                         marginLeft: responsiveScreenWidth(6),
-                        width: '100%',
+                        width: '60%',
                         alignSelf: 'flex-start'
                     }}>
-                        <TouchableOpacity style={{ width: responsiveScreenWidth(8), height: responsiveScreenHeight(5) }}
+                        <TouchableOpacity style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
                             onPress={() => navigation.goBack()}
                         >
                             <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
@@ -40,11 +39,28 @@ const BrandDetails = ({ route }) => {
                     <View style={{ marginTop: responsiveScreenHeight(3) }}>
                         <UserProfile
                             name={myBrandDetails.name}
-                            role={myBrandDetails.descriptionSmall}
+                            role={myBrandDetails?.peopleCategory?.title}
+                            img={myBrandDetails?.profilePhoto?.url}
                         />
                     </View>
 
+
                     <View style={{ alignItems: "center", marginTop: responsiveScreenHeight(2), }}>
+
+                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
+                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                Date of Birth:
+                                <Text style={styles.desciptionTxt}>
+                                    {' '}
+                                    {myBrandDetails.dateOfBirth ? myBrandDetails.dateOfBirth : 'Nan'}
+                                </Text>
+
+                            </Text>
+                        </View>
+                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginBottom: responsiveScreenHeight(1) }}>
+                        </View>
+
+
                         <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
                             <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
                                 Description
@@ -52,9 +68,26 @@ const BrandDetails = ({ route }) => {
                         </View>
                         <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
                             <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.5), fontFamily: 'mrt-rglr' }}>
-                                {myBrandDetails.description}
+                                {myBrandDetails.detail}
                             </Text>
                         </View>
+                        {myBrandDetails?.profileUrl &&
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
+                                <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                    profile
+                                </Text>
+                                <TouchableOpacity
+                                    style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                    onPress={() => Linking.openURL(myBrandDetails?.profileUrl)}
+                                >
+                                    <Text style={styles.greenBackground}>
+                                        Go to {myBrandDetails.name}'s Profile
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+
+
                         <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
                             <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
                                 Specialities
@@ -70,33 +103,22 @@ const BrandDetails = ({ route }) => {
                         }}>
                             {myBrandDetails?.linking?.map((i, index) => {
                                 return (
-                                    <View
+                                    <TouchableOpacity
                                         key={index}
                                         style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                        onPress={() => navigation.navigate('Proof')}
                                     >
                                         <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
                                             {i.name}
                                         </Text>
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             })}
                         </View>
-                        <View style={{ alignSelf: 'flex-start', margin: responsiveScreenHeight(2) }}>
+                        <View style={{alignSelf:'flex-start', margin: responsiveScreenHeight(2) }}>
                             <Text style={styles.titleText}>Alternative:</Text>
                             <Text style={styles.desciptionTxt}>No alternatives researched yet</Text>
                         </View>
-
-                        {myBrandDetails?.proofLinks &&
-                            <TouchableOpacity
-                                style={styles.linkOpacity}
-                                onPress={() => Linking.openURL(myBrandDetails?.proofLinks)}
-                            >
-                                <Text style={styles.greenBackground}>
-                                    Proof
-                                </Text>
-                            </TouchableOpacity>
-                        }
-
                     </View>
                 </ScrollView>
             </View>
@@ -139,11 +161,6 @@ const styles = StyleSheet.create({
         color: "black",
         fontFamily: 'mrt-rglr'
     },
-    desciptionTxt: {
-        color: "black",
-        fontSize: responsiveScreenFontSize(1.5),
-        fontFamily: 'mrt-rglr'
-    },
     packageDetailsContainer: {
         margin: responsiveScreenWidth(4),
         backgroundColor: 'white',
@@ -167,23 +184,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: "5%"
     },
-    linkOpacity: {
-        marginHorizontal: responsiveScreenWidth(1),
-        backgroundColor: "#BFFF00",
-        justifyContent: "center",
-        alignItems: 'center',
-        width: '95%',
-        alignSelf: 'center',
-        borderRadius: responsiveScreenFontSize(1)
+    desciptionTxt: {
+        color: "black",
+        fontSize: responsiveScreenFontSize(1.5),
+        fontFamily: 'mrt-rglr'
     },
     greenBackground: {
         color: "black",
-        fontFamily: 'mrt-mid',
-        alignSelf: 'center',
-        fontSize: responsiveScreenFontSize(2),
+        fontFamily: 'mrt-rglr',
+        alignSelf: 'flex-start',
         padding: responsiveScreenFontSize(1),
+        backgroundColor: "#BFFF00",
         borderRadius: responsiveScreenFontSize(1),
     }
+
 });
 
-export default BrandDetails
+export default CelebrityDetails

@@ -11,11 +11,14 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         width: responsiveScreenWidth(18),
-        height: responsiveScreenHeight(10),
+        height: responsiveScreenHeight(8),
+        marginVertical: responsiveScreenHeight(1)
     },
     imgStyle: {
         width: "100%",
+        borderRadius: responsiveScreenFontSize(30),
         height: "100%",
+        padding: 10
     },
     detailContainer: {
         justifyContent: 'center',

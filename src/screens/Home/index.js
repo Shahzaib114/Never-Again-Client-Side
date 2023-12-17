@@ -9,7 +9,7 @@ import { exploreCategoriesByName } from '../../api/schema/queries';
 import Header from '../../components/header/Header';
 import UserProfile from '../../components/userDataComp/UserData';
 import { COLORS } from '../../utility/colors/LightColors';
-
+import styles from './style';
 
 const numColumns = 2;
 const Home = () => {
@@ -40,7 +40,6 @@ const Home = () => {
             setMyLatestBrands(brandsData?.brands)
         }
     }, [brandsData])
-
     const nav = async (item) => {
         let categoryName = item?.name
         setCurrentBrand(categoryName)
@@ -58,27 +57,27 @@ const Home = () => {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: "white" }}>
-            <View style={{ height: responsiveScreenHeight(8), backgroundColor: "#BFFF00" }}>
+        <View style={styles.mainview}>
+            <View style={styles.headerview}>
                 <Header
                     isBack={false}
                 />
             </View>
-            <View style={{ height: responsiveScreenHeight(8), backgroundColor: "#BFFF00" }}>
-                <View style={{ marginLeft: responsiveScreenWidth(5) }}>
-                    <Text style={{ color: COLORS.blackColor, fontSize: responsiveScreenFontSize(3), fontFamily: "mrt-mid" }}>Let’s find Which{'\n'}Product to Use!</Text>
+            <View style={styles.headertextmainview}>
+                <View style={styles.headertextview}>
+                    <Text style={styles.headertext}>Let’s find Which{'\n'}Product to Use!</Text>
                 </View>
             </View>
-            <View style={{ height: responsiveScreenHeight(8), backgroundColor: "#BFFF00", borderBottomLeftRadius: 20, borderBottomRightRadius: 20, alignItems: "center", justifyContent: "center" }}>
-                <TouchableOpacity style={{ backgroundColor: "white", padding: 8, width: responsiveScreenWidth(70), borderRadius: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.headersearchmainview}>
+                <TouchableOpacity style={styles.headersearchtouchable}>
                     <TextInput
                         placeholder="Search"
-                        style={{ flex: 1, paddingLeft: 10 }} // Adjust paddingLeft as needed
+                        style={styles.headersearchtextinput} // Adjust paddingLeft as needed
                     />
                     <FontAwesome name="search" size={15} color="black" />
                 </TouchableOpacity>
             </View>
-            <View style={{ alignItems: "center", marginLeft: responsiveScreenWidth(5) }}>
+            <View style={styles.brandview}>
                 {loading ?
                     (
                         <View>
@@ -98,7 +97,7 @@ const Home = () => {
                                             nav(item)
                                         }}
                                         style={
-                                            [styles.itemContainer, { backgroundColor: selectedItem === item ? COLORS.lightPrimaryColor : COLORS.whiteColor, }]
+                                            [styles.itemContainer, { backgroundColor: selectedItem === item ? COLORS.primaryColor : COLORS.whiteColor, }]
                                         }
                                         key={item.id}
                                     >
@@ -115,18 +114,17 @@ const Home = () => {
                 }
             </View>
             <View>
-                <Text style={{
-                    color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(3), margin: "2%", marginHorizontal: '4%'
-                }}>
+                <Text style={
+                    styles.currentBrand
+                }>
                     {currentBrand}
                 </Text>
             </View>
-            {isLoading ?
+            {brandsLoading || isLoading ?
                 (
-                    <View>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <ActivityIndicator></ActivityIndicator>
                     </View>
-
                 )
                 :
                 (
@@ -134,13 +132,9 @@ const Home = () => {
                         (
                             <ScrollView alwaysBounceVertical showsHorizontalScrollIndicator={false}>
                                 {myLatestBrands.map((item) => (
-                                    <TouchableOpacity key={item.id} style={{
-                                        backgroundColor: COLORS.lightPrimaryColor,
-                                        marginBottom: responsiveScreenFontSize(0.5),
-                                        width: '95%',
-                                        alignSelf: 'center',
-                                        borderRadius: responsiveScreenFontSize(1)
-                                    }}
+                                    <TouchableOpacity key={item.id} style={
+                                        styles.latestbrands
+                                    }
                                         onPress={() => {
                                             navigation.navigate('BrandDetails', {
                                                 brandId: item.id
@@ -148,9 +142,10 @@ const Home = () => {
                                         }}
                                     >
                                         <UserProfile
-                                            name={item.path}
-                                            role={item.name}
+                                            name={item.name}
+                                            role={item.subTitle}
                                             navigateIcon={true}
+                                            img={item?.icon?.url}
                                         />
                                     </TouchableOpacity>
                                 ))}
@@ -159,7 +154,7 @@ const Home = () => {
                         )
                         :
                         (
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={styles.noavailableview}>
                                 <Text style={styles.titleText}>
                                     No Available Brands
                                 </Text>
@@ -172,75 +167,6 @@ const Home = () => {
     )
 }
 
-const styles = StyleSheet.create({
-    itemContainer: {
-        margin: 6,
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 9,
-        borderRadius: 10,
-        overflow: 'hidden',
-        ...Platform.select({
-            android: {
-                elevation: 4,
-            },
-        }),
-    },
-    itemContainer2: {
-        margin: 6,
-        backgroundColor: 'white',
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: 10,
-        width: responsiveScreenWidth(90),
-        borderRadius: 10,
-        overflow: 'hidden',
-        ...Platform.select({
-            android: {
-                elevation: 4,
-            },
-        }),
-    },
-    titleText: {
-        fontSize: responsiveScreenFontSize(2),
-        color: "black",
-        fontFamily: 'mrt-rglr'
-    },
-    titleText2: {
-        fontSize: responsiveScreenFontSize(2),
-        color: "black",
-        fontFamily: 'mrt-mid'
-    },
-    titleText3: {
-        fontSize: responsiveScreenFontSize(2),
-        color: "black",
-        fontFamily: 'mrt-rglr'
-    },
-    packageDetailsContainer: {
-        margin: responsiveScreenWidth(4),
-        backgroundColor: 'white',
-        borderRadius: 2,
-        padding: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 2, // For Android
-        margin: responsiveScreenWidth(4)
-    },
-    loader: {
-        minHeight: responsiveScreenHeight(10),
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: "70%"
-    },
-    flatlist: {
-        flex: 1,
-        alignItems: "center",
-        marginTop: "5%"
-    },
 
-});
 
 export default Home

@@ -9,7 +9,7 @@ const Settings = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: responsiveScreenHeight(2),marginLeft:responsiveScreenWidth(6), width:'50%', alignSelf:'flex-start' }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: responsiveScreenHeight(2), marginLeft: responsiveScreenWidth(6), width: '50%', alignSelf: 'flex-start' }}>
           <TouchableOpacity style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
             onPress={() => navigation.goBack()}
           >
@@ -28,29 +28,25 @@ const Settings = () => {
             </View>
             <Text style={{ color: COLORS.blackColor, fontFamily: 'mrt-rglr', textAlign: "center", fontSize: 16, marginLeft: "5%" }}>Near Me</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }}>
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/button.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
-            </View>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>Approve Brands</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }}>
+          <TouchableOpacity 
+           onPress={() => navigation.navigate('CodeScanner')}
+          style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }}>
             <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
               <Image source={require('../../../src/assets/images/scanner.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
             </View>
             <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>Scan Me</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }}>
+          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }} onPress={() => navigation.navigate('AboutNeverAgain')}>
             <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
               <Image source={require('../../../src/assets/images/about.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
             </View>
             <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>About Never Again</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }}>
+          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }} onPress={() => navigation.navigate('Boycott')}>
             <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
               <Image source={require('../../../src/assets/images/document.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
             </View>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>How To boycott?</Text>
+            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>How to boycott?</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }} onPress={() => navigation.navigate('Faqs')}>
             <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>

@@ -1,7 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+     
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="pk.eyJ1IjoibmV2ZXJhZ2FpbmFwcCIsImEiOiJjbHBoYmg4eXAwM3JkMmtwZjZlb2xicnpiIn0.jC7Pjey-2MlkbQWBjpfpzA"/>
 
     <application android:usesCleartextTraffic="true" tools:targetApi="28" tools:ignore="GoogleAppIndexingWarning" tools:replace="android:usesCleartextTraffic" />
 </manifest>

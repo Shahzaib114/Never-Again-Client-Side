@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: responsiveScreenFontSize(1)
     },
-    noalternativeview: {
+    nobrandview : {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'

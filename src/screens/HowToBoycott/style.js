@@ -11,31 +11,28 @@ const styles = StyleSheet.create({
     headerview: {
         height: responsiveScreenHeight(8)
     },
-    textview: {
-        margin: "5%"
+    textview:{
+        margin: "5%" 
     },
-    text1: {
+    text1:{
         color: COLORS.blackColor,
-        fontFamily: "mrt-mid",
-        fontSize: responsiveScreenFontSize(2.6)
+         fontFamily: "mrt-mid",
+          fontSize: responsiveScreenFontSize(2.6)
     },
-    text2: {
+    text2:{
         color: COLORS.blackColor,
-        fontFamily: "mrt-mid",
-        fontSize: responsiveScreenFontSize(2)
-    },
-    bottomtextview:{
-        marginBottom: "5%"
-    },
-    textleft:{
-        marginLeft: responsiveScreenWidth(10)
-    },
-    textcentre:{
-        textAlign: "center"
+         fontFamily: "mrt-mid",
+          fontSize: responsiveScreenFontSize(2)
     },
     text3:{
-        color: COLORS.blackColor,
-         textAlign: "center"
+        textAlign:"center",
+        fontSize: responsiveScreenFontSize(1.8), 
+        fontFamily: "mrt-rglr"
+    },
+    text4:{
+        textAlign: "center",
+         fontSize: responsiveScreenFontSize(1.9),
+          fontFamily: "mrt-rglr",
     }
 
 })

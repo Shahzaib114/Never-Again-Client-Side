@@ -6,9 +6,9 @@ import {
   OperationVariables,
   createHttpLink,
   useLazyQuery,
-  useQuery,
+  useQuery
 } from "@apollo/client";
-import { brandDetailsById, brands, categories, exploreCategoriesByName, scanBrands } from "../schema/queries";
+import { approvedBrandDetails, approvedBrands, brandDetailsById, brands, categories, getCategoryPeoples, getCelebrity, getPeople, getPeopleCategories, scanBrands } from "../schema/queries";
 const client = new ApolloClient({
   link: createHttpLink({ uri: 'https://api-eu-west-2.hygraph.com/v2/clolfekda891n01uqbbqrev99/master' }),
   cache: new InMemoryCache(),
@@ -38,10 +38,10 @@ interface Response {
 
 // Approved brands
 
-export function useApprovedBrands(props: any): Response {
+export function useApprovedBrands(props) {
   try {
     let { orderBy, value, first, skip } = props;
-    const { loading, error, data, refetch } = useQuery(schema.approvedBrands, {
+    const { loading, error, data, refetch } = useQuery(approvedBrands, {
       variables: {
         orderBy,
         first,
@@ -50,24 +50,40 @@ export function useApprovedBrands(props: any): Response {
       },
     });
 
-    return { loading, error, data, refetch };
+    // return { loading, error, data, refetch };
+    if (loading) {
+      return { brandsLoading: true, brandsError: null, brandsData: null };
+    }
+
+    if (error) {
+      return { brandsLoading: false, brandsError: 'An error occurred while fetching categoriesData', brandsData: null };
+    }
+
+    return { brandsLoading: false, brandsError: null, brandsData: data };
   } catch (err) {
     console.error("Error in useApprovedBrands:", err);
     return { loading: false };
   }
 }
 
-export function approvedBrandDetails(props: ID): Response {
+export function GetapprovedBrandDetailsById(props) {
   try {
-    let { id } = props;
-    const { loading, error, data } = useQuery(schema.approvedBrandDetails, {
+    let id = props.id
+    const { loading, error, data } = useQuery(approvedBrandDetails, {
       variables: { id },
     });
-    return { loading, error, data };
+    if (loading) {
+      return { brandsLoading: true, brandsError: null, brandData: null };
+    }
+    if (error) {
+      return { brandsLoading: false, brandsError: 'An error occurred while fetching categoriesData', brandData: null };
+    }
+    return { brandsLoading: false, brandsError: null, brandData: data };
   } catch (err) {
     console.log("error", err);
     return { loading: false };
   }
+
 }
 
 // Brands
@@ -116,7 +132,6 @@ export function brandDetails(ID) {
     return { brandLoading: false, brandError: null, brandData: data };
 
   } catch (err) {
-    getCategoryPeoples;
     console.log("error", err);
     return { loading: false };
   }
@@ -141,7 +156,7 @@ export function getCategories() {
 }
 export function exploreApprovedCategories(categoryId: string): Response {
   try {
-    const { loading, error, data, refetch } = useQuery(
+    const { isloading, iserror, data, refetch } = useQuery(
       schema.exploreApprovedCategories,
       {
         variables: {
@@ -149,71 +164,63 @@ export function exploreApprovedCategories(categoryId: string): Response {
         },
       }
     );
-    return { loading, error, data, refetch };
+    return { isloading, iserror, ApprovedData: data, refetch };
   } catch (err) {
     console.log("error", err);
     return { loading: false };
   }
 }
 
-export function getPeopleCategories(): Response {
+export function getTotalPeople() {
   try {
-    const { loading, error, data } = useQuery(schema.getPeopleCategories);
-    return { loading, error, data };
+    const { loading, error, data } = useQuery(getPeopleCategories);
+    if (loading) {
+      // Loading state
+      return { loading: true, error: null, peopleCategories: null };
+    }
+
+    if (error) {
+      // Error state
+      // console.error('GraphQL error:', error);
+      return { loading: false, error: 'An error occurred while fetching people Categories', peopleCategories: null };
+    }
+
+    // Data state
+    // console.log('GraphQL categoriesData:', data);
+    return { loading: false, error: null, peopleCategories: data };
+
+    // return { loading, error, data };
   } catch (err) {
     console.log("error", err);
     return { loading: false };
   }
 }
 
-export function getCategoryPeoples(props: ID): Response {
-  try {
-    let { id } = props;
-    const { loading, error, data, refetch } = useQuery(
-      schema.getCategoryPeoples,
-      {
-        variables: {
-          id,
-        },
-      }
-    );
-    return { loading, error, data, refetch };
-  } catch (err) {
-    console.log("error", err);
-    return { loading: false };
-  }
-}
 
-export function getCelebrity(props: ID): Response {
+export function getRandomPeople() {
   try {
-    let { id } = props;
-    const { loading, error, data } = useQuery(schema.getCelebrity, {
+    const { loading, error, data, refetch } = useQuery(getPeople, {
       variables: {
-        id,
+        value: "",
+        first: 100,
       },
     });
-    return { loading, error, data };
-  } catch (err) {
-    console.log("error", err);
-    return { loading: false };
-  }
-}
+    if (loading) {
+      // Loading state
+      return { randomPeopleLoading: true, randomPeopleError: null, randomPeople: null };
+    }
 
-export function getPeople({
-  value,
-  first,
-}: {
-  value: string;
-  first: number;
-}): Response {
-  try {
-    const { loading, error, data, refetch } = useQuery(schema.getPeople, {
-      variables: {
-        ...(value && value.length > 2 ? { value } : { value: "" }),
-        first,
-      },
-    });
-    return { pLoad: loading, pError: error, pData: data, refetch };
+    if (error) {
+      // Error state
+      // console.error('GraphQL error:', error);
+      return { randomPeopleLoading: false, randomPeopleError: 'An error occurred while fetching people Categories', randomPeople: null };
+    }
+
+    // Data state
+    return { randomPeopleLoading: false, randomPeopleError: null, randomPeople: data };
+
+
+    // return { pLoad: loading, pError: error, pData: data, refetch };
   } catch (err) {
     console.log("error", err);
     return { pLoad: false };
@@ -245,14 +252,19 @@ export function brandsNearMe({
   }
 }
 
-export function getScannedBrands({ value }) {
+export function getScannedBrands(props) {
+  const { barcode, name } = props
   try {
     const { loading, error, data, refetch } = useQuery(scanBrands, {
       variables: {
-        value,
+        barcode: [6034000005233],
+        name: name,
       },
     });
+    if (error) {
+      console.log('errorerrorerror', error)
 
+    }
     return { scanLoading: loading, scanError: error, scanData: data, refetch };
   } catch (err) {
     console.error("Error in useBrands:", err);

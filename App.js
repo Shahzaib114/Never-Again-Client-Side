@@ -9,20 +9,25 @@ import { useFonts } from 'expo-font';
 import { Image, View } from 'react-native';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import client from './src/api';
+import AboutNeverAgain from './src/screens/AboutNeverAgain';
 import NestedNavigator from './src/screens/Bottomtabnested';
+import { default as BoyCotBrands, default as Lock } from './src/screens/BoyCotBrands';
+import Feedback from './src/screens/Feedback';
+import Boycott from './src/screens/HowToBoycott';
 import NearMe from './src/screens/Nearme';
+import SelloutStack from './src/screens/SelloutsStack/selloutStack';
 import BrandDetails from './src/screens/brandsdetails';
 import CodeScanner from './src/screens/cameraScanner/codeScanner';
 import Faqs from './src/screens/faqs';
-import Lock from './src/screens/lock';
 import People from './src/screens/people';
-import { default as Alternative, default as Profile } from './src/screens/profile';
 import Proof from './src/screens/proof';
 import Question from './src/screens/question';
 import Settings from './src/screens/settings';
 import CustomSplashScreen from './src/screens/splashscreen';
 import { COLORS } from './src/utility/colors/LightColors';
-import Sellouts from './src/screens/Bottomtabnested/sellouts/Sellout';
+import Alternative from './src/screens/alternative';
+import ApprovedBrandStack from './src/screens/alterNativeStack/AlterNativeStack';
+import BoyCottBrandStack from './src/screens/boycotStack/BoyCotStack';
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
@@ -62,7 +67,7 @@ function BottomTabs() {
               <Ionicons name="home-outline" size={responsiveFontSize(3)} color="black" />
           )
         }} />
-      <Tab.Screen name='Alternative' component={Alternative}
+      <Tab.Screen name='Alternative' component={ApprovedBrandStack}
 
         options={{
           tabBarIcon: ({ focused }) => (
@@ -108,7 +113,7 @@ function BottomTabs() {
             </View>
           )
         }} />
-      <Tab.Screen name='BoYcot' component={Lock}
+      <Tab.Screen name='BoYcot' component={BoyCottBrandStack}
         options={{
           tabBarIcon: ({ focused }) => (
             focused ?
@@ -118,7 +123,7 @@ function BottomTabs() {
 
           )
         }} />
-      <Tab.Screen name='Sellouts' component={Sellouts}
+      <Tab.Screen name='Sellouts' component={SelloutStack}
         options={{
           tabBarIcon: ({ focused }) => (
             focused ?
@@ -149,7 +154,7 @@ const App = () => {
           <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName='CustomSplashScreen'>
             <Stack.Screen name='CustomSplashScreen' component={CustomSplashScreen} />
             <Stack.Screen name='home' component={BottomTabs} />
-            <Stack.Screen name='profile' component={Profile} />
+            <Stack.Screen name='Alternative' component={Alternative} />
             <Stack.Screen name='lock' component={Lock} />
             <Stack.Screen name='question' component={Question} />
             <Stack.Screen name='BrandDetails' component={BrandDetails} />
@@ -158,6 +163,10 @@ const App = () => {
             <Stack.Screen name='Settings' component={Settings} />
             <Stack.Screen name='NearMe' component={NearMe} />
             <Stack.Screen name='Faqs' component={Faqs} />
+            <Stack.Screen name='CodeScanner' component={CodeScanner} />
+            <Stack.Screen name='Boycott' component={Boycott} />
+            <Stack.Screen name='AboutNeverAgain' component={AboutNeverAgain} />
+            <Stack.Screen name='Feedback' component={Feedback} />
           </Stack.Navigator>
         </NavigationContainer>
       </ApolloProvider>

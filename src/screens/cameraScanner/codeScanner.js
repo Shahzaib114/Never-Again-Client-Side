@@ -1,3 +1,4 @@
+import { useLazyQuery } from '@apollo/client';
 import { useIsFocused } from '@react-navigation/native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import {
@@ -11,7 +12,6 @@ import {
     Alert,
     AppState,
     Image,
-    Linking,
     Modal,
     Pressable,
     StyleSheet,
@@ -21,16 +21,14 @@ import {
 } from 'react-native';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import { scale } from 'react-native-size-matters';
-import { decodeBarcode, getScannedBrands } from '../../api/hooks';
 import { GoUPCApiKey, api_base_url } from '../../../env';
+import { scanBrands } from '../../api/schema/queries';
 import { COLORS } from '../../utility/colors/LightColors';
 
 export default function CodeScanner() {
-    //defining all the states and require functions
     const [type, setType] = useState(CameraType.back);
-    const { scanLoading, scanError, scanData, refetch } = getScannedBrands({
-        name: null,
-    });
+    const [refetchQuery, { scanLoading, scanError, scanData }] = useLazyQuery(scanBrands);
+
     const [modalVisible, setModalVisible] = useState(false)
     const [startScan, setStartScan] = useState(false)
     const [scanResults, setScanResults] = useState()
@@ -44,13 +42,11 @@ export default function CodeScanner() {
         type: Camera.Constants.Type.back,
     });
 
-
     useEffect(() => {
         if (!permission) {
             requestCameraPermission()
         }
     }, [hasPermission])
-
 
     const appState = useRef(AppState.currentState);
     const [appStateVisible, setAppStateVisible] = useState(appState.current);
@@ -84,7 +80,6 @@ export default function CodeScanner() {
 
         try {
             const response = await fetch(url, { method: "get" });
-            // console.log("response", await response.json())
             const data = await response.json();
             const productData = data.product;
             if (productData !== null) {
@@ -100,7 +95,7 @@ export default function CodeScanner() {
     };
 
     const onScannedProductDetails = async (decodedProductBrand) => {
-        await refetch({
+        await refetchQuery({
             barcode: decodedProductBrand?.ean ? [decodedProductBrand?.ean] : [],
             name: decodedProductBrand?.name || "",
             brand: decodedProductBrand?.brand || "",
@@ -114,24 +109,29 @@ export default function CodeScanner() {
             if (numRegex.test(data.data)) {
                 setModalVisible(true)
                 setStartScan(true)
-                console.log('inlude all number', data.data)
-                const result = await refetch({
-                    barcode: [parseFloat(data.data ?? 0)],
+                let scannedNumber = data.data
+                console.log('scannedNumber', scannedNumber)
+                const result = await refetchQuery({
+                    variables: {
+                        barcode: [parseFloat(scannedNumber ?? 0)]
+                    }
                 });
-                if (result.data?.brands && result.data?.brands?.length === 0) {
+                console.log('ressulttt', result.data)
+                if (result?.data?.brands && result.data?.brands?.length === 0) {
+                    console.log('not in my server')
                     const productData = await decodeBarcode(data.data);
-                    // setDecodedProduct(productData);
-                    // setScannedBrand(productData);
+                    console.log('productData', productData)
                     await onScannedProductDetails(productData);
-                    console.log('resullttt', productData)
                     setScanResults(productData)
-                    // setModalVisible()
+                    setStartScan(false)
+                    setScanned(false)
+                } else {
+                    console.log('got from my server')
+                    setScanResults(result?.data?.brands[0])
                     setStartScan(false)
                     setScanned(false)
                 }
             } else {
-                // Alert.alert('Please Scan Bar Code')
-                console.log('no includ enumerb', data.data)
                 Alert.alert('Scanning Failed', 'Please Scan Bar Code', [
                     {
                         text: 'Ok',
@@ -140,26 +140,6 @@ export default function CodeScanner() {
                     },
                 ])
             }
-            // Alert.alert('QR/Bar Code Scanned', data.data, [
-            //     {
-            //         text: 'Cancel',
-            //         onPress: () => setScanned(false),
-            //         style: 'cancel',
-            //     },
-            //     {
-            //         text: 'Go To Link', onPress: () => {
-            //             Linking.openURL(data.data).catch((e => {
-            //                 Alert.alert('Could Not Open The QR/Bar Code Link for', data.data, [
-            //                     {
-            //                         text: 'Ok', onPress: () => {
-            //                             setScanned(false)
-            //                         }
-            //                     },
-            //                 ]);
-            //             }))
-            //         }
-            //     },
-            // ]);
         },
         []
     );
@@ -184,14 +164,38 @@ export default function CodeScanner() {
                         :
                         <>
                             <View style={{ width: '90%', alignSelf: 'center' }}>
+                                {scanResults?.icon?.url ?
+                                    <Image
+                                        source={{ uri: scanResults?.icon?.url }}
+                                        resizeMode='contain'
+                                        style={{
+                                            width: responsiveScreenWidth(30),
+                                            height: responsiveScreenHeight(13.5),
+                                            alignSelf: 'center',
+                                            borderRadius: responsiveFontSize(20)
+                                        }}
+                                    />
+                                    :
+                                    scanResults?.imageUrl &&
+                                    <Image
+                                        source={{ uri: scanResults?.imageUrl }}
+                                        resizeMode='contain'
+                                        style={{
+                                            width: responsiveScreenWidth(30),
+                                            height: responsiveScreenHeight(13.5),
+                                            alignSelf: 'center',
+                                            borderRadius: responsiveFontSize(20)
+                                        }}
+                                    />
+                                }
                                 <Text style={[styles.scannerTxt, { color: COLORS.blackColor }]}>
                                     Scanned Successfully
                                 </Text>
                                 <Text style={styles.titleTxt}>
-                                    name:<Text style={styles.descriptionTxt}> {scanResults?.name}{'\n'}</Text>
-                                    Brand: <Text style={styles.descriptionTxt}>{scanResults?.brand}{'\n'}</Text>
-                                    Category: <Text style={styles.descriptionTxt}>{scanResults?.category}{'\n'}</Text>
-                                    Description: <Text style={styles.descriptionTxt}>{scanResults?.description}{'\n'}</Text>
+                                    name:<Text style={styles.descriptionTxt}> {scanResults?.name ? scanResults?.name : 'NaN'}{'\n'}</Text>
+                                    Brand: <Text style={styles.descriptionTxt}>{scanResults?.brand ? scanResults?.brand : 'NaN'}{'\n'}</Text>
+                                    Category: <Text style={styles.descriptionTxt}>{scanResults?.category ? scanResults?.category : 'NaN'}{'\n'}</Text>
+                                    Description: <Text style={styles.descriptionTxt}>{scanResults?.description ? scanResults?.description : 'NaN'}{'\n'}</Text>
                                 </Text>
                             </View>
                             <TouchableOpacity

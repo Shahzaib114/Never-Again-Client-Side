@@ -5,6 +5,7 @@ import BrandDetails from '../brandsdetails';
 import Proof from '../proof';
 import People from '../people';
 import Faqs from '../faqs';
+import ApproveBrandDetails from '../approveBrandDetails/ApproveBrandDetails';
 
 
 const stack = createNativeStackNavigator();
@@ -16,6 +17,9 @@ const NestedNavigator = () => {
             <stack.Screen name='Proof' component={Proof} />
             <stack.Screen name='People' component={People} />
             <stack.Screen name='Faqs' component={Faqs} />
+            <stack.Screen name='ApproveBrandDetails' component={ApproveBrandDetails} />
+
+
         </stack.Navigator>
     )
 }

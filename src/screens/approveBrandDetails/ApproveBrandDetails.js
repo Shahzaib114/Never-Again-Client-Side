@@ -2,19 +2,19 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
-import { brandDetails } from '../../api/hooks'
+import { GetapprovedBrandDetailsById } from '../../api/hooks'
 import UserProfile from '../../components/userDataComp/UserData'
 
-const BrandDetails = ({ route }) => {
+const ApproveBrandDetails = ({ route }) => {
 
     const navigation = useNavigation();
-    let { brandLoading, brandError, brandData } = brandDetails({
-        id: route?.params?.brandId,
+    let { brandLoading, brandError, brandData } = GetapprovedBrandDetailsById({
+        id: route?.params?.brandId && route?.params?.brandId
     });
     const [myBrandDetails, setMyBrandDetails] = useState()
 
     useEffect(() => {
-        setMyBrandDetails(brandData?.brand)
+        setMyBrandDetails(brandData?.approvedBrand)
     }, [brandData])
 
     if (myBrandDetails) {
@@ -23,14 +23,14 @@ const BrandDetails = ({ route }) => {
                 <ScrollView style={{ marginVertical: responsiveScreenHeight(1) }}>
                     <View style={{
                         flexDirection: "row",
-                        gap: responsiveScreenWidth(2),
+                        justifyContent: "space-between",
                         alignItems: "center",
                         marginTop: responsiveScreenHeight(2),
                         marginLeft: responsiveScreenWidth(6),
-                        width: '100%',
+                        width: '60%',
                         alignSelf: 'flex-start'
                     }}>
-                        <TouchableOpacity style={{ width: responsiveScreenWidth(8), height: responsiveScreenHeight(5) }}
+                        <TouchableOpacity style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
                             onPress={() => navigation.goBack()}
                         >
                             <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
@@ -40,7 +40,7 @@ const BrandDetails = ({ route }) => {
                     <View style={{ marginTop: responsiveScreenHeight(3) }}>
                         <UserProfile
                             name={myBrandDetails.name}
-                            role={myBrandDetails.descriptionSmall}
+                            role={myBrandDetails?.peopleCategory?.title}
                         />
                     </View>
 
@@ -70,14 +70,14 @@ const BrandDetails = ({ route }) => {
                         }}>
                             {myBrandDetails?.linking?.map((i, index) => {
                                 return (
-                                    <View
+                                    <TouchableOpacity
                                         key={index}
                                         style={{ marginHorizontal: responsiveScreenWidth(1) }}
                                     >
                                         <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
                                             {i.name}
                                         </Text>
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             })}
                         </View>
@@ -86,13 +86,13 @@ const BrandDetails = ({ route }) => {
                             <Text style={styles.desciptionTxt}>No alternatives researched yet</Text>
                         </View>
 
-                        {myBrandDetails?.proofLinks &&
+                        {myBrandDetails?.shopLink &&
                             <TouchableOpacity
                                 style={styles.linkOpacity}
-                                onPress={() => Linking.openURL(myBrandDetails?.proofLinks)}
+                                onPress={() => Linking.openURL(myBrandDetails?.shopLink)}
                             >
                                 <Text style={styles.greenBackground}>
-                                    Proof
+                                    Shop
                                 </Text>
                             </TouchableOpacity>
                         }
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
         fontSize: responsiveScreenFontSize(1.5),
         fontFamily: 'mrt-rglr'
     },
+
     packageDetailsContainer: {
         margin: responsiveScreenWidth(4),
         backgroundColor: 'white',
@@ -186,4 +187,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default BrandDetails
+export default ApproveBrandDetails
