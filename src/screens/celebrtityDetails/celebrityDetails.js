@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
-import { GetapprovedBrandDetailsById, brandDetails, getCategoryPeopleById } from '../../api/hooks'
+import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { responsiveFontSize, responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
+import IconComponent from '../../components/iconComponent/IconComponent'
 import UserProfile from '../../components/userDataComp/UserData'
+import { COLORS } from '../../utility/colors/LightColors'
 
 const CelebrityDetails = ({ route }) => {
 
@@ -29,11 +30,11 @@ const CelebrityDetails = ({ route }) => {
                         width: '60%',
                         alignSelf: 'flex-start'
                     }}>
-                        <TouchableOpacity style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
+                        <Pressable style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
                             onPress={() => navigation.goBack()}
                         >
                             <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
-                        </TouchableOpacity>
+                        </Pressable>
                         <Text style={{ textAlign: "center", fontFamily: 'mrt-mid' }}>{myBrandDetails.name}</Text>
                     </View>
                     <View style={{ marginTop: responsiveScreenHeight(3) }}>
@@ -74,53 +75,81 @@ const CelebrityDetails = ({ route }) => {
                         {myBrandDetails?.profileUrl &&
                             <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
                                 <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                    profile
+                                    Profile
                                 </Text>
-                                <TouchableOpacity
+                                <Pressable
                                     style={{ marginHorizontal: responsiveScreenWidth(1) }}
                                     onPress={() => Linking.openURL(myBrandDetails?.profileUrl)}
                                 >
                                     <Text style={styles.greenBackground}>
                                         Go to {myBrandDetails.name}'s Profile
                                     </Text>
-                                </TouchableOpacity>
+                                </Pressable>
                             </View>
                         }
 
+                        {myBrandDetails?.linking &&
+                            <>
+                                <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
+                                    <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                        Specialities
+                                    </Text>
+                                </View>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-start',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    alignSelf: 'baseline',
+                                    left: '5%'
+                                }}>
+                                    {myBrandDetails?.linking?.map((i, index) => {
+                                        return (
+                                            <Pressable
+                                                key={index}
+                                                style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                                onPress={() => navigation.navigate('Proof')}
+                                            >
+                                                <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
+                                                    {i.name}
+                                                </Text>
+                                            </Pressable>
+                                        )
+                                    })}
+                                </View>
+                            </>
+                        }
 
                         <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
                             <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Specialities
+                                Social Links
                             </Text>
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            alignSelf: 'baseline',
-                            left: '5%'
-                        }}>
-                            {myBrandDetails?.linking?.map((i, index) => {
-                                return (
-                                    <TouchableOpacity
-                                        key={index}
-                                        style={{ marginHorizontal: responsiveScreenWidth(1) }}
-                                        onPress={() => navigation.navigate('Proof')}
-                                    >
-                                        <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
-                                            {i.name}
-                                        </Text>
-                                    </TouchableOpacity>
-                                )
-                            })}
-                        </View>
-                        <View style={{alignSelf:'flex-start', margin: responsiveScreenHeight(2) }}>
-                            <Text style={styles.titleText}>Alternative:</Text>
-                            <Text style={styles.desciptionTxt}>No alternatives researched yet</Text>
+                            <View style={styles.imagesContainer}>
+                                <IconComponent
+                                    socialLink={myBrandDetails?.facebookUrl}
+                                    imageSource={require('../../../src/assets/images/facebook.png')}
+                                    iconName={'facebook'}
+                                />
+                                <IconComponent
+                                    socialLink={myBrandDetails?.instagramUrl || undefined}
+                                    imageSource={require('../../../src/assets/images/instagram.png')}
+                                    iconName={'instagram'}
+                                />
+                                <IconComponent
+                                    socialLink={myBrandDetails?.twitterUrl && myBrandDetails?.twitterUrl}
+                                    imageSource={require('../../../src/assets/images/twitter.png')}
+                                    iconName={'twitter'}
+                                />
+                            </View>
                         </View>
                     </View>
                 </ScrollView>
+            </View>
+        )
+    } else {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size={'large'} />
             </View>
         )
     }
@@ -141,6 +170,22 @@ const styles = StyleSheet.create({
             },
         }),
     },
+    imagesContainer: {
+        flexDirection: "row",
+        gap: responsiveFontSize(1),
+    },
+    imgStyle: {
+        width: "100%",
+        height: "100%"
+    },
+    imgContainer: {
+        backgroundColor: COLORS.whiteColor,
+        width: responsiveScreenHeight(6),
+        height: responsiveScreenHeight(6),
+        padding: responsiveFontSize(2),
+        borderRadius: responsiveFontSize(20)
+    },
+
     itemContainer2: {
         margin: 9,
         width: responsiveScreenWidth(40),

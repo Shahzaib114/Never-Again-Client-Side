@@ -27,6 +27,7 @@ const ExploreView = ({
                         height: responsiveScreenHeight(7),
                         justifyContent: 'center',
                         borderRadius: 4,
+                        width: responsiveScreenWidth(22),
                     }}>
                         <Text
                             style={{
@@ -34,11 +35,14 @@ const ExploreView = ({
                                 padding: responsiveFontSize(0.7),
                                 alignSelf: 'center',
                                 borderRadius: responsiveFontSize(0.7),
-                                marginTop: responsiveFontSize(-1),
-                                fontFamily: 'mrt-mid'
+                                marginTop: responsiveFontSize(-3.5),
+                                fontFamily: 'mrt-mid',
+                                justifyContent:'center',
+                                alignItems:'center',
+                                fontSize: responsiveFontSize(1.5)
                             }}
                         >{displayText}</Text>
-                        <Entypo name={iconName} size={responsiveFontSize(4.5)} color="black" style={{ marginHorizontal: responsiveFontSize(1), alignSelf: 'center' }} />
+                        <Entypo name={iconName} size={responsiveFontSize(4.5)} color="black" style={{ marginHorizontal: responsiveFontSize(1), alignSelf: 'center', textAlign:'center' }} />
                     </View>
 
                 )}

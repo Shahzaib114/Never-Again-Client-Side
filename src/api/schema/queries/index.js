@@ -162,6 +162,9 @@ export const getCategoryPeoples = gql`
           dateOfBirth
           detail
           description
+          facebookUrl
+          instagramUrl
+          twitterUrl  
           profileUrl
           profilePhoto {
             id

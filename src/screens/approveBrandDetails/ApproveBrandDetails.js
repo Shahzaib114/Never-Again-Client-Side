@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { GetapprovedBrandDetailsById } from '../../api/hooks'
 import UserProfile from '../../components/userDataComp/UserData'
@@ -30,11 +30,11 @@ const ApproveBrandDetails = ({ route }) => {
                         width: '60%',
                         alignSelf: 'flex-start'
                     }}>
-                        <TouchableOpacity style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
+                        <Pressable style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
                             onPress={() => navigation.goBack()}
                         >
                             <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
-                        </TouchableOpacity>
+                        </Pressable>
                         <Text style={{ textAlign: "center", fontFamily: 'mrt-mid' }}>{myBrandDetails.name}</Text>
                     </View>
                     <View style={{ marginTop: responsiveScreenHeight(3) }}>
@@ -70,35 +70,37 @@ const ApproveBrandDetails = ({ route }) => {
                         }}>
                             {myBrandDetails?.linking?.map((i, index) => {
                                 return (
-                                    <TouchableOpacity
+                                    <Pressable
                                         key={index}
                                         style={{ marginHorizontal: responsiveScreenWidth(1) }}
                                     >
                                         <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
                                             {i.name}
                                         </Text>
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 )
                             })}
                         </View>
-                        <View style={{ alignSelf: 'flex-start', margin: responsiveScreenHeight(2) }}>
-                            <Text style={styles.titleText}>Alternative:</Text>
-                            <Text style={styles.desciptionTxt}>No alternatives researched yet</Text>
-                        </View>
 
                         {myBrandDetails?.shopLink &&
-                            <TouchableOpacity
+                            <Pressable
                                 style={styles.linkOpacity}
                                 onPress={() => Linking.openURL(myBrandDetails?.shopLink)}
                             >
                                 <Text style={styles.greenBackground}>
                                     Shop
                                 </Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         }
 
                     </View>
                 </ScrollView>
+            </View>
+        )
+    } else {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size={'large'} />
             </View>
         )
     }
@@ -175,7 +177,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '95%',
         alignSelf: 'center',
-        borderRadius: responsiveScreenFontSize(1)
+        borderRadius: responsiveScreenFontSize(1),
+        margin: responsiveScreenHeight(2)
     },
     greenBackground: {
         color: "black",

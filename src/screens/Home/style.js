@@ -32,25 +32,37 @@ const styles = StyleSheet.create({
     headersearchtouchable: {
         backgroundColor: "white",
         padding: 8,
-        width: responsiveScreenWidth(70),
+        width: responsiveScreenWidth(90),
         borderRadius: 10,
+        fontFamily: 'mrt-rglr',
         flexDirection: 'row',
         alignItems: 'center'
     },
     headersearchtextinput: {
         flex: 1,
-        paddingLeft: 10
+        paddingLeft: 10,
+        fontSize: responsiveScreenFontSize(2),
+        fontFamily: 'mrt-rglr',
     },
     brandview: {
         alignItems: "center",
         marginLeft: responsiveScreenWidth(5)
     },
     latestbrands: {
-        backgroundColor: COLORS.primaryColor,
+        backgroundColor: "white",
         marginBottom: responsiveScreenFontSize(0.5),
         width: '95%',
         alignSelf: 'center',
-        borderRadius: responsiveScreenFontSize(1)
+        top: 3,
+        borderRadius: responsiveScreenFontSize(1),
+        shadowColor: "#000", // Shadow color
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 20, // Shadow opacity (adjust as needed)
+        shadowRadius: 20, // Shadow radius
+        elevation: 6, // For Android
     },
     currentBrand: {
         color: "black",

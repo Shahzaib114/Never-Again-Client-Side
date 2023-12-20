@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, Modal, ScrollView, Text, Pressable, View } from 'react-native'
 import { responsiveFontSize, responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { getRandomPeople, getTotalPeople } from '../../../api/hooks'
 import { getCategoryPeoples } from '../../../api/schema/queries'
@@ -73,7 +73,7 @@ const Sellouts = () => {
                                             </Text>
                                             <ScrollView showsHorizontalScrollIndicator={false}>
                                                 {peopleList?.map((item, index) => (
-                                                    <TouchableOpacity
+                                                    <Pressable
 
                                                         key={index} style={{
                                                             backgroundColor: COLORS.lightPrimaryColor,
@@ -97,7 +97,7 @@ const Sellouts = () => {
                                                             navigateIcon={true}
                                                             img={item?.profilePhoto?.url && item?.profilePhoto?.url}
                                                         />
-                                                    </TouchableOpacity>
+                                                    </Pressable>
                                                 ))}
                                             </ScrollView>
                                         </>
@@ -114,7 +114,7 @@ const Sellouts = () => {
                             </View>
                         )
                     }
-                    <TouchableOpacity
+                    <Pressable
                         onPress={() => {
                             setPeopleList([])
                             setModalVisible(false)
@@ -127,7 +127,7 @@ const Sellouts = () => {
                         <Text style={styles.titleText}>
                             Back
                         </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
             </Modal >
 
@@ -155,7 +155,7 @@ const Sellouts = () => {
                                         {totalPeople && `${totalPeople[0]?.title} [Sellouts]`}
                                     </Text>
                                 </View>
-                                <TouchableOpacity
+                                <Pressable
                                     onPress={async () => {
                                         setPeopleName(totalPeople[0]?.title)
                                         getPeopleLists(totalPeople[0]?.id)
@@ -166,7 +166,7 @@ const Sellouts = () => {
                                         Explore Now
                                     </Text>
                                     <Ionicons name="caret-forward" size={responsiveFontSize(3)} color={COLORS.blackColor} />
-                                </TouchableOpacity>
+                                </Pressable>
                             </View>
                             <View style={styles.topItemsContainer}>
                                 <View style={styles.childContainer}>
@@ -181,7 +181,7 @@ const Sellouts = () => {
                                         {totalPeople && `${totalPeople[1]?.title} [Liars]`}
                                     </Text>
                                 </View>
-                                <TouchableOpacity
+                                <Pressable
                                     onPress={async () => {
                                         setPeopleName(totalPeople[1]?.title)
                                         getPeopleLists(totalPeople[1]?.id)
@@ -191,7 +191,7 @@ const Sellouts = () => {
                                         Explore Now
                                     </Text>
                                     <Ionicons name="caret-forward" size={responsiveFontSize(3)} color={COLORS.blackColor} />
-                                </TouchableOpacity>
+                                </Pressable>
                             </View>
                         </>
                     )
@@ -208,7 +208,7 @@ const Sellouts = () => {
                             {myRandomPeople?.map((item, index) => {
 
                                 return (
-                                    <TouchableOpacity
+                                    <Pressable
                                         onPress={() => {
                                             navigation.navigate('CelebrityDetails', {
                                                 celebId: item.id,
@@ -229,7 +229,7 @@ const Sellouts = () => {
                                             name={item.name}
                                             role={item.peopleCategory?.title}
                                         />
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 )
                             })
                             }

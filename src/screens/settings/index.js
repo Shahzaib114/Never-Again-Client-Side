@@ -3,78 +3,79 @@ import React from 'react'
 import { Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { COLORS } from '../../utility/colors/LightColors'
+import styles from './style'
 
 const Settings = () => {
   const navigation = useNavigation();
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={styles.mainview}>
       <ScrollView>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: responsiveScreenHeight(2), marginLeft: responsiveScreenWidth(6), width: '50%', alignSelf: 'flex-start' }}>
-          <TouchableOpacity style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
+        <View style={styles.view1}>
+          <TouchableOpacity style={styles.view1touchable}
             onPress={() => navigation.goBack()}
           >
-            <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+            <Image source={require('../../../src/assets/images/left-arrow.png')} style={styles.image} />
           </TouchableOpacity>
           <View>
-            <Text style={{ textAlign: "center", fontFamily: 'mrt-rglr' }}>Settings</Text>
+            <Text style={styles.view1text}>Settings</Text>
           </View>
         </View>
-        <View style={{ margin: "5%" }}>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(2) }}
+        <View style={styles.view2}>
+          <TouchableOpacity style={styles.view2touchable}
             onPress={() => navigation.navigate('NearMe')}
           >
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/workplace.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+            <View style={styles.view4}>
+              <Image source={require('../../../src/assets/images/workplace.png')} style={styles.image} />
             </View>
-            <Text style={{ color: COLORS.blackColor, fontFamily: 'mrt-rglr', textAlign: "center", fontSize: 16, marginLeft: "5%" }}>Near Me</Text>
+            <Text style={styles.text2}>Near Me</Text>
           </TouchableOpacity>
           <TouchableOpacity 
            onPress={() => navigation.navigate('CodeScanner')}
-          style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }}>
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/scanner.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+          style={styles.view3}>
+            <View style={styles.view4}>
+              <Image source={require('../../../src/assets/images/scanner.png')} style={styles.image} />
             </View>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>Scan Me</Text>
+            <Text style={styles.text2}>Scan Me</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }} onPress={() => navigation.navigate('AboutNeverAgain')}>
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/about.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+          <TouchableOpacity style={styles.view3} onPress={() => navigation.navigate('AboutNeverAgain')}>
+            <View style={styles.view4}>
+              <Image source={require('../../../src/assets/images/about.png')} style={styles.image} />
             </View>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>About Never Again</Text>
+            <Text style={styles.text2}>About Never Again</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }} onPress={() => navigation.navigate('Boycott')}>
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/document.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+          <TouchableOpacity style={styles.view3} onPress={() => navigation.navigate('Boycott')}>
+            <View style={styles.view4}>
+              <Image source={require('../../../src/assets/images/document.png')} style={styles.image} />
             </View>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>How to boycott?</Text>
+            <Text style={styles.text2}>How to boycott?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: "row", marginTop: responsiveScreenHeight(5) }} onPress={() => navigation.navigate('Faqs')}>
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/internet.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+          <TouchableOpacity style={styles.view3} onPress={() => navigation.navigate('Faqs')}>
+            <View style={styles.view4}>
+              <Image source={require('../../../src/assets/images/internet.png')} style={styles.image} />
             </View>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "5%" }}>FAQs</Text>
+            <Text style={styles.text2}>FAQs</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => { Linking.openURL('https://www.instagram.com/') }}
             style={{ flexDirection: "row", alignItems: "center", padding: 6, borderRadius: 10, marginTop: responsiveScreenHeight(5), backgroundColor: "#BFFF00", width: responsiveScreenWidth(50) }}>
-            <View style={{ width: responsiveScreenWidth(6), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/instagram.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+            <View style={styles.view4}>
+              <Image source={require('../../../src/assets/images/instagram.png')} style={styles.image} />
             </View>
             <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", marginLeft: "5%" }}>Follow us on Instagram</Text>
           </TouchableOpacity>
           <View style={{ marginTop: responsiveScreenHeight(2) }}>
             <View style={{ width: responsiveScreenWidth(10), height: responsiveScreenHeight(6) }}>
-              <Image source={require('../../../src/assets/images/neveragainLogo.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+              <Image source={require('../../../src/assets/images/neveragainLogo.png')} style={styles.image} />
             </View>
           </View>
           <View style={{ flexDirection: "row", marginTop: responsiveScreenHeight(1) }}>
-            <View style={{ width: responsiveScreenWidth(4), height: responsiveScreenHeight(3) }}>
-              <Image source={require('../../../src/assets/images/copyright.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+            <View style={styles.view4}>
+              <Image source={require('../../../src/assets/images/copyright.png')} style={styles.image} />
             </View>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "2%" }}>2023</Text>
+            <Text style={styles.text}>2023</Text>
           </View>
           <View style={{ flexDirection: "row", marginTop: responsiveScreenHeight(1) }}>
-            <Text style={{ fontFamily: 'mrt-rglr', color: "black", textAlign: "center", fontSize: 16, marginLeft: "2%" }}>All Rights Reserved</Text>
+            <Text style={styles.text}>All Rights Reserved</Text>
           </View>
         </View>
       </ScrollView>

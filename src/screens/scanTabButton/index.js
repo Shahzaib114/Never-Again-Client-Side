@@ -3,7 +3,7 @@ import React from 'react'
 
 const ScanButton = () => {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.mainview}>
             <Text>ScanButton</Text>
         </View>
     )

@@ -1,8 +1,8 @@
 import { useLazyQuery } from '@apollo/client'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
+import { ActivityIndicator, Modal, Pressable, ScrollView, Text, View } from 'react-native'
+import { responsiveScreenFontSize, responsiveScreenHeight } from 'react-native-responsive-dimensions'
 import { getCategories } from '../../api/hooks'
 import { exploreCategoriesByName } from '../../api/schema/queries'
 import ExploreView from '../../components/explore'
@@ -108,7 +108,7 @@ const BoyCotBrands = () => {
                                             </Text>
                                             <ScrollView showsHorizontalScrollIndicator={false}>
                                                 {myLatestBrands?.map((item, index) => (
-                                                    <TouchableOpacity
+                                                    <Pressable
 
                                                         key={index} style={
                                                             styles.latestbrandstouchable
@@ -125,7 +125,7 @@ const BoyCotBrands = () => {
                                                             role={item.subTitle}
                                                             navigateIcon={true}
                                                         />
-                                                    </TouchableOpacity>
+                                                    </Pressable>
                                                 ))}
                                             </ScrollView>
                                         </>
@@ -142,7 +142,7 @@ const BoyCotBrands = () => {
                             </View>
                         )
                     }
-                    <TouchableOpacity
+                    <Pressable
                         onPress={() => setModalVisible(false)}
                         style={{
                             backgroundColor: 'red',
@@ -152,7 +152,7 @@ const BoyCotBrands = () => {
                         <Text style={styles.titleText}>
                             Back
                         </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
             </Modal >
         </View >

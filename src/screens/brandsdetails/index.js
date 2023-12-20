@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { brandDetails } from '../../api/hooks'
 import UserProfile from '../../components/userDataComp/UserData'
@@ -30,11 +30,11 @@ const BrandDetails = ({ route }) => {
                         width: '100%',
                         alignSelf: 'flex-start'
                     }}>
-                        <TouchableOpacity style={{ width: responsiveScreenWidth(8), height: responsiveScreenHeight(5) }}
+                        <Pressable style={{ width: responsiveScreenWidth(8), height: responsiveScreenHeight(5) }}
                             onPress={() => navigation.goBack()}
                         >
                             <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
-                        </TouchableOpacity>
+                        </Pressable>
                         <Text style={{ textAlign: "center", fontFamily: 'mrt-mid' }}>{myBrandDetails.name}</Text>
                     </View>
                     <View style={{ marginTop: responsiveScreenHeight(3) }}>
@@ -87,18 +87,24 @@ const BrandDetails = ({ route }) => {
                         </View>
 
                         {myBrandDetails?.proofLinks &&
-                            <TouchableOpacity
+                            <Pressable
                                 style={styles.linkOpacity}
                                 onPress={() => Linking.openURL(myBrandDetails?.proofLinks)}
                             >
                                 <Text style={styles.greenBackground}>
                                     Proof
                                 </Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         }
 
                     </View>
                 </ScrollView>
+            </View>
+        )
+    } else {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size={'large'} />
             </View>
         )
     }

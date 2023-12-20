@@ -28,4 +28,5 @@ export const COLORS = {
     lightRedColor: '#fa6c6c',
     blueColor: '#0988fc',
     darkRedColor: '#8C2425',
+    transparentColor: 'rgba(0,0,0,0.5)',
 }

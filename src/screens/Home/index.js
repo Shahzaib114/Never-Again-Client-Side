@@ -2,8 +2,7 @@ import { useLazyQuery } from '@apollo/client';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
+import { ActivityIndicator, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { getCategories, useBrands } from '../../api/hooks';
 import { exploreCategoriesByName } from '../../api/schema/queries';
 import Header from '../../components/header/Header';
@@ -69,13 +68,13 @@ const Home = () => {
                 </View>
             </View>
             <View style={styles.headersearchmainview}>
-                <TouchableOpacity style={styles.headersearchtouchable}>
+                <Pressable style={styles.headersearchtouchable}>
                     <TextInput
-                        placeholder="Search"
+                        placeholder="Search..."
                         style={styles.headersearchtextinput} // Adjust paddingLeft as needed
                     />
                     <FontAwesome name="search" size={15} color="black" />
-                </TouchableOpacity>
+                </Pressable>
             </View>
             <View style={styles.brandview}>
                 {loading ?
@@ -91,7 +90,7 @@ const Home = () => {
 
                                 <View key={item.id}>
 
-                                    <TouchableOpacity
+                                    <Pressable
                                         onPress={() => {
                                             setSelectedItem(item)
                                             nav(item)
@@ -105,7 +104,7 @@ const Home = () => {
                                         <Text style={styles.titleText}>
                                             {item.name}
                                         </Text>
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 </View>
 
                             ))}
@@ -132,7 +131,7 @@ const Home = () => {
                         (
                             <ScrollView alwaysBounceVertical showsHorizontalScrollIndicator={false}>
                                 {myLatestBrands.map((item) => (
-                                    <TouchableOpacity key={item.id} style={
+                                    <Pressable key={item.id} style={
                                         styles.latestbrands
                                     }
                                         onPress={() => {
@@ -147,7 +146,7 @@ const Home = () => {
                                             navigateIcon={true}
                                             img={item?.icon?.url}
                                         />
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 ))}
                             </ScrollView>
 
@@ -156,7 +155,7 @@ const Home = () => {
                         (
                             <View style={styles.noavailableview}>
                                 <Text style={styles.titleText}>
-                                    No Available Brands
+                                    No Details Available
                                 </Text>
                             </View>
                         )

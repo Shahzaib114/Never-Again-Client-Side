@@ -116,7 +116,6 @@ export default function CodeScanner() {
                         barcode: [parseFloat(scannedNumber ?? 0)]
                     }
                 });
-                console.log('ressulttt', result.data)
                 if (result?.data?.brands && result.data?.brands?.length === 0) {
                     console.log('not in my server')
                     const productData = await decodeBarcode(data.data);
@@ -149,6 +148,10 @@ export default function CodeScanner() {
             />
             <Modal
                 visible={modalVisible}
+                // transparent
+                onRequestClose={() => {
+                    setModalVisible(false)
+                }}
             >
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.whiteColor }}>
                     {startScan ?
@@ -163,7 +166,10 @@ export default function CodeScanner() {
                         </View>
                         :
                         <>
-                            <View style={{ width: '90%', alignSelf: 'center' }}>
+                            <View style={{
+                                width: '90%', alignSelf: 'center',
+                                marginVertical: 15,
+                            }}>
                                 {scanResults?.icon?.url ?
                                     <Image
                                         source={{ uri: scanResults?.icon?.url }}
@@ -188,22 +194,24 @@ export default function CodeScanner() {
                                         }}
                                     />
                                 }
-                                <Text style={[styles.scannerTxt, { color: COLORS.blackColor }]}>
-                                    Scanned Successfully
-                                </Text>
-                                <Text style={styles.titleTxt}>
-                                    name:<Text style={styles.descriptionTxt}> {scanResults?.name ? scanResults?.name : 'NaN'}{'\n'}</Text>
-                                    Brand: <Text style={styles.descriptionTxt}>{scanResults?.brand ? scanResults?.brand : 'NaN'}{'\n'}</Text>
-                                    Category: <Text style={styles.descriptionTxt}>{scanResults?.category ? scanResults?.category : 'NaN'}{'\n'}</Text>
-                                    Description: <Text style={styles.descriptionTxt}>{scanResults?.description ? scanResults?.description : 'NaN'}{'\n'}</Text>
-                                </Text>
+                                <View style={{ padding: responsiveFontSize(3), backgroundColor: COLORS.primaryColor, borderRadius: responsiveFontSize(2) }}>
+                                    <Text style={[styles.scannerTxt, { color: COLORS.blackColor, alignSelf: 'center' }]}>
+                                        Scanned Successfully
+                                    </Text>
+                                    <Text style={styles.titleTxt}>
+                                        name:<Text style={styles.descriptionTxt}> {scanResults?.name ? scanResults?.name : 'NaN'}{'\n'}</Text>
+                                        Brand: <Text style={styles.descriptionTxt}>{scanResults?.brand ? scanResults?.brand : 'NaN'}{'\n'}</Text>
+                                        Category: <Text style={styles.descriptionTxt}>{scanResults?.category ? scanResults?.category : 'NaN'}{'\n'}</Text>
+                                        Description: <Text style={styles.descriptionTxt}>{scanResults?.description ? scanResults?.description : 'NaN'}{'\n'}</Text>
+                                    </Text>
+                                </View>
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
                                     setStartScan(true)
                                     setModalVisible(false)
                                 }}
-                                style={{ padding: responsiveFontSize(1), backgroundColor: COLORS.greenColor, borderRadius: responsiveFontSize(0.5) }}
+                                style={{ padding: responsiveFontSize(1), backgroundColor: 'rgb(107, 183, 254)', borderRadius: responsiveFontSize(0.5) }}
                             >
                                 <Text style={styles.titleTxt}>
                                     Scan Again
@@ -253,13 +261,13 @@ export default function CodeScanner() {
                     )
                     :
                     (
-                        <TouchableOpacity
+                        <Pressable
                             onPress={() => { requestCameraPermission() }}
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text>
                                 Please Allow Camera Permissions First
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     )
             }
         </View >

@@ -1,9 +1,10 @@
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
-import Header from '../../components/header/Header';
-import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import styles from './style';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, ScrollView, Text, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
+import Header from '../../components/header/Header';
 
 const NearMe = () => {
     const [position, setPosition] = useState({
@@ -38,61 +39,72 @@ const NearMe = () => {
     const [errorMsg, setErrorMsg] = useState(null);
     const mapRef = useRef()
     return (
-        <View style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={styles.mainview}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View style={{ height: responsiveScreenHeight(8) }}>
+                <View style={styles.headerview}>
                     <Header
                         isBack={true}
                     />
                 </View>
+                <View style={{ margin: "5%", justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ color: "black", fontFamily: 'mrt-rglr', fontSize: responsiveFontSize(2) }}>Your Current Location:
+                        <Text style={{ color: "black", fontFamily: 'mrt-mid' }}> Islamabad, Pakistan</Text>
+                    </Text>
+                </View>
+
                 <View style={{ margin: "5%" }}>
                     <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>
                         Brands Found Near Your Location!
                     </Text>
                 </View>
-                <MapView
-                    userInterfaceStyle={'light'}
-                    toolbarEnabled={true}
-                    ref={mapRef}
-                    style={{
-                        width: "95%",
-                        alignSelf: 'center',
-                        height: responsiveScreenHeight(40),
-                    }}
-                    zoomTapEnabled
-                    zoomEnabled={true}
-                    showsUserLocation={false}
-                    initialRegion={position}
-                    showsCompass={true}
-                    showsMyLocationButton={false}
-                    scrollEnabled={true}
-                    rotateEnabled={true}
-                    maxZoomLevel={17.5}
-                    region={position}
-                    mapPadding={{ top: 0, right: 0, left: 0 }}
-                    loadingEnabled
-                >
-                    <Marker
-                        // title={destinationLabel}
-                        coordinate={position}
-                    >
-                        {/* <View style={{ width: scale(25), height: scale(35) }}>
-                            <Image
-                                source={require('../../../assets/Images/mapIcon.png')}
-                                style={{ width: '100%', height: '100%' }}
-                                resizeMode='contain'
-                            />
-                        </View> */}
-                    </Marker>
-
-
-                </MapView>
-                {/* </TouchableOpacity> */}
-
-                <View style={{ margin: "10%" }}>
-                    <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>Your Current Location:</Text>
-                    <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>Your Current Location:</Text>
-                    <Text style={{ color: "black", fontFamily: 'mrt-rglr' }}>Your Current Location:</Text>
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
+                    <View style={{
+                        borderRadius: 10,
+                        width: responsiveScreenWidth(90),
+                        overflow: 'hidden',
+                        shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 5,
+                        },
+                        shadowOpacity: 0.5, // Set the shadow opacity (adjust as needed)
+                        shadowRadius: 5,
+                        elevation: 5,
+                    }}>
+                        <MapView
+                            userInterfaceStyle={'light'}
+                            toolbarEnabled={true}
+                            ref={mapRef}
+                            style={
+                                styles.mapstyle
+                            }
+                            zoomTapEnabled
+                            zoomEnabled={true}
+                            showsUserLocation={false}
+                            initialRegion={position}
+                            showsCompass={true}
+                            showsMyLocationButton={false}
+                            scrollEnabled={true}
+                            rotateEnabled={true}
+                            maxZoomLevel={17.5}
+                            region={position}
+                            mapPadding={{ top: 0, right: 0, left: 0 }}
+                            loadingEnabled
+                        >
+                            <Marker
+                                // title={destinationLabel}
+                                coordinate={position}
+                            >
+                                <View style={{ width: responsiveScreenWidth(10), height: responsiveScreenHeight(8) }}>
+                                    <Image
+                                        source={require('../../assets/images/locationpin.png')}
+                                        style={{ width: '100%', height: '100%' }}
+                                        resizeMode='contain'
+                                    />
+                                </View>
+                            </Marker>
+                        </MapView>
+                    </View>
                 </View>
             </ScrollView>
         </View>

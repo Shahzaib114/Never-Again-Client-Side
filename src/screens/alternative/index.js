@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Modal, ScrollView, StyleSheet, Text, Pressable, View } from 'react-native'
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { getCategories, useBrands } from '../../api/hooks'
 import { exploreApprovedCategories } from '../../api/schema/queries'
@@ -115,7 +115,7 @@ const Alternative = () => {
                       </Text>
                       <ScrollView showsHorizontalScrollIndicator={false}>
                         {myLatestBrands?.map((item, index) => (
-                          <TouchableOpacity
+                          <Pressable
 
                             key={index} style={{
                               backgroundColor: COLORS.lightPrimaryColor,
@@ -137,7 +137,7 @@ const Alternative = () => {
                               navigateIcon={true}
                               img={item?.icon?.url}
                             />
-                          </TouchableOpacity>
+                          </Pressable>
                         ))}
                       </ScrollView>
                     </>
@@ -154,7 +154,7 @@ const Alternative = () => {
               </View>
             )
           }
-          <TouchableOpacity
+          <Pressable
             onPress={() => setModalVisible(false)}
             style={{
               backgroundColor: 'red',
@@ -164,7 +164,7 @@ const Alternative = () => {
             <Text style={styles.titleText}>
               Back
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Modal >
     </View >
