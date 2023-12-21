@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Modal, ScrollView, StyleSheet, Text, Pressable, View } from 'react-native'
+import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { getCategories, useBrands } from '../../api/hooks'
 import { exploreApprovedCategories } from '../../api/schema/queries'
@@ -46,7 +46,6 @@ const Alternative = () => {
     setIsLoading(false)
   }
 
-
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
 
@@ -67,14 +66,21 @@ const Alternative = () => {
           )
           :
           (
-            <View style={{ margin: '5%', flexWrap: "wrap", flexDirection: "row" }}>
+            <View style={{
+              marginVertical: '5%', flexWrap: "wrap",
+              flexDirection: "row",
+            }}>
               {data?.map((item, index) => (
-                < View key={index} style={{ marginVertical: "5%", marginHorizontal: "2%" }}>
+                < View key={index} style={{
+                  marginVertical: "5%",
+                  width: '29%',
+                  marginHorizontal: '2%',
+                }}>
                   <ExploreView
                     key={index}
                     imageSource={item?.icon?.url}
                     displayText={item.name}
-                    iconName='check'
+                    iconName='certificate'
                     onPress={() => {
                       setModalVisible(true)
                       nav(item)
@@ -118,7 +124,7 @@ const Alternative = () => {
                           <Pressable
 
                             key={index} style={{
-                              backgroundColor: COLORS.lightPrimaryColor,
+                              backgroundColor: COLORS.primaryColor,
                               marginBottom: responsiveScreenFontSize(0.5),
                               width: '100%',
                               alignSelf: 'center',

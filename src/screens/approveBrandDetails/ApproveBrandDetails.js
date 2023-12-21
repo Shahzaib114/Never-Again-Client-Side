@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { GetapprovedBrandDetailsById } from '../../api/hooks'
+import SimpleHeader from '../../components/simpleHeader/SimpleHeader'
 import UserProfile from '../../components/userDataComp/UserData'
 
 const ApproveBrandDetails = ({ route }) => {
@@ -21,22 +22,9 @@ const ApproveBrandDetails = ({ route }) => {
         return (
             <View style={{ flex: 1, backgroundColor: "white" }}>
                 <ScrollView style={{ marginVertical: responsiveScreenHeight(1) }}>
-                    <View style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginTop: responsiveScreenHeight(2),
-                        marginLeft: responsiveScreenWidth(6),
-                        width: '60%',
-                        alignSelf: 'flex-start'
-                    }}>
-                        <Pressable style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
-                            onPress={() => navigation.goBack()}
-                        >
-                            <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
-                        </Pressable>
-                        <Text style={{ textAlign: "center", fontFamily: 'mrt-mid' }}>{myBrandDetails.name}</Text>
-                    </View>
+                    <SimpleHeader
+                        txt={myBrandDetails.name}
+                    />
                     <View style={{ marginTop: responsiveScreenHeight(3) }}>
                         <UserProfile
                             name={myBrandDetails.name}
@@ -44,55 +32,82 @@ const ApproveBrandDetails = ({ route }) => {
                         />
                     </View>
 
-                    <View style={{ alignItems: "center", marginTop: responsiveScreenHeight(2), }}>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Description
-                            </Text>
-                        </View>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                            <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.5), fontFamily: 'mrt-rglr' }}>
-                                {myBrandDetails.description}
-                            </Text>
-                        </View>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
-                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Specialities
-                            </Text>
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            alignSelf: 'baseline',
-                            left: '5%'
-                        }}>
-                            {myBrandDetails?.linking?.map((i, index) => {
-                                return (
-                                    <Pressable
-                                        key={index}
-                                        style={{ marginHorizontal: responsiveScreenWidth(1) }}
-                                    >
-                                        <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
-                                            {i.name}
-                                        </Text>
-                                    </Pressable>
-                                )
-                            })}
-                        </View>
+                    <View style={{
+                        alignItems: "center",
+                        marginTop: responsiveScreenHeight(2),
+                        backgroundColor: 'white',
+                        width: '95%',
+                        alignSelf: 'center',
+                        padding: 10,
+                        margin: 10,
+                        overflow: 'hidden',
+                        borderRadius: responsiveScreenFontSize(1),
+                        borderColor: 'grey',
+                        shadowColor: "#000", // Shadow color
+                        shadowOffset: {
+                            width: 0,
+                            height: 5,
+                        },
+                        shadowOpacity: 1, // Shadow opacity (adjust as needed)
+                        shadowRadius: 1, // Shadow radius
+                        elevation: 6, // For Android
 
-                        {myBrandDetails?.shopLink &&
-                            <Pressable
-                                style={styles.linkOpacity}
-                                onPress={() => Linking.openURL(myBrandDetails?.shopLink)}
-                            >
-                                <Text style={styles.greenBackground}>
-                                    Shop
+                    }}>
+                        <View style={{ backgroundColor: 'white', borderRadius: 10, width: '100%', }}>
+                            <View style={{ justifyContent: "center", width: '95%', }}>
+                                <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                    Description
                                 </Text>
-                            </Pressable>
-                        }
-
+                            </View>
+                            <View style={{ justifyContent: "center", width: '95%', }}>
+                                <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.9), fontFamily: 'mrt-rglr' }}>
+                                    {myBrandDetails.description}
+                                </Text>
+                            </View>
+                            <View style={{ justifyContent: "center", width: '95%', marginTop: responsiveScreenHeight(2) }}>
+                                <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                    Specialities
+                                </Text>
+                            </View>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-start',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                alignSelf: 'baseline',
+                                left: '5%'
+                            }}>
+                                {myBrandDetails?.linking?.map((i, index) => {
+                                    return (
+                                        <Pressable
+                                            key={index}
+                                            style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                        >
+                                            <Text style={{
+                                                color: "black",
+                                                alignSelf: 'flex-start',
+                                                padding: responsiveScreenFontSize(1),
+                                                backgroundColor: "#BFFF00",
+                                                borderRadius: 10,
+                                                fontFamily: 'mrt-rglr',
+                                            }}>
+                                                {i.name}
+                                            </Text>
+                                        </Pressable>
+                                    )
+                                })}
+                            </View>
+                            {myBrandDetails?.shopLink &&
+                                <Pressable
+                                    style={styles.linkOpacity}
+                                    onPress={() => Linking.openURL(myBrandDetails?.shopLink)}
+                                >
+                                    <Text style={styles.greenBackground}>
+                                        Shop
+                                    </Text>
+                                </Pressable>
+                            }
+                        </View>
                     </View>
                 </ScrollView>
             </View>

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../utility/colors/LightColors";
 import { responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from "react-native-responsive-dimensions";
+import { COLORS } from "../../utility/colors/LightColors";
 
 const styles = StyleSheet.create({
     container: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     detailContainer: {
         justifyContent: 'center',
         marginHorizontal: responsiveScreenWidth(2),
-        width:'60%',
+        width: '60%',
     },
     titleTxt: {
         color: COLORS.blackColor,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     },
     descriptionTxt: {
         color: COLORS.blackColor,
-        fontSize: responsiveScreenFontSize(1.6),
+        fontSize: responsiveScreenFontSize(1.8),
         fontFamily: 'mrt-rglr'
     }
 })

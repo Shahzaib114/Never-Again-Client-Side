@@ -3,6 +3,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
@@ -72,9 +73,9 @@ function BottomTabs() {
         options={{
           tabBarIcon: ({ focused }) => (
             focused ?
-              <AntDesign name="checksquare" size={responsiveFontSize(3)} color="#BFFF00" />
+              <MaterialCommunityIcons name="certificate" size={responsiveFontSize(3.5)} color="#BFFF00" />
               :
-              <AntDesign name="check" size={responsiveFontSize(3)} color="black" />
+              <MaterialCommunityIcons name="certificate-outline" size={responsiveFontSize(3.5)} color="black" />
           )
         }} />
 
@@ -113,7 +114,7 @@ function BottomTabs() {
             </View>
           )
         }} />
-      <Tab.Screen name='BoYcot' component={BoyCottBrandStack}
+      <Tab.Screen name='Boycott' component={BoyCottBrandStack}
         options={{
           tabBarIcon: ({ focused }) => (
             focused ?

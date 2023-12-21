@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { responsiveFontSize, responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import IconComponent from '../../components/iconComponent/IconComponent'
+import SimpleHeader from '../../components/simpleHeader/SimpleHeader'
 import UserProfile from '../../components/userDataComp/UserData'
 import { COLORS } from '../../utility/colors/LightColors'
 
@@ -21,22 +22,9 @@ const CelebrityDetails = ({ route }) => {
         return (
             <View style={{ flex: 1, backgroundColor: "white" }}>
                 <ScrollView style={{ marginVertical: responsiveScreenHeight(1) }}>
-                    <View style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginTop: responsiveScreenHeight(2),
-                        marginLeft: responsiveScreenWidth(6),
-                        width: '60%',
-                        alignSelf: 'flex-start'
-                    }}>
-                        <Pressable style={{ width: responsiveScreenWidth(5), height: responsiveScreenHeight(3) }}
-                            onPress={() => navigation.goBack()}
-                        >
-                            <Image source={require('../../../src/assets/images/left-arrow.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
-                        </Pressable>
-                        <Text style={{ textAlign: "center", fontFamily: 'mrt-mid' }}>{myBrandDetails.name}</Text>
-                    </View>
+                    <SimpleHeader
+                        txt={myBrandDetails.name}
+                    />
                     <View style={{ marginTop: responsiveScreenHeight(3) }}>
                         <UserProfile
                             name={myBrandDetails.name}
@@ -45,101 +33,102 @@ const CelebrityDetails = ({ route }) => {
                         />
                     </View>
 
+                    <View style={styles.cardContainer}>
+                        <View style={styles.cardChildContainer}>
 
-                    <View style={{ alignItems: "center", marginTop: responsiveScreenHeight(2), }}>
-
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Date of Birth:
-                                <Text style={styles.desciptionTxt}>
-                                    {' '}
-                                    {myBrandDetails.dateOfBirth ? myBrandDetails.dateOfBirth : 'Nan'}
-                                </Text>
-
-                            </Text>
-                        </View>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginBottom: responsiveScreenHeight(1) }}>
-                        </View>
-
-
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Description
-                            </Text>
-                        </View>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                            <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.5), fontFamily: 'mrt-rglr' }}>
-                                {myBrandDetails.detail}
-                            </Text>
-                        </View>
-                        {myBrandDetails?.profileUrl &&
-                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
                                 <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                    Profile
-                                </Text>
-                                <Pressable
-                                    style={{ marginHorizontal: responsiveScreenWidth(1) }}
-                                    onPress={() => Linking.openURL(myBrandDetails?.profileUrl)}
-                                >
-                                    <Text style={styles.greenBackground}>
-                                        Go to {myBrandDetails.name}'s Profile
+                                    Date of Birth:
+                                    <Text style={styles.desciptionTxt}>
+                                        {' '}
+                                        {myBrandDetails.dateOfBirth ? myBrandDetails.dateOfBirth : 'Nan'}
                                     </Text>
-                                </Pressable>
-                            </View>
-                        }
 
-                        {myBrandDetails?.linking &&
-                            <>
+                                </Text>
+                            </View>
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginBottom: responsiveScreenHeight(1) }}>
+                            </View>
+
+
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
+                                <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                    Description
+                                </Text>
+                            </View>
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
+                                <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.9), fontFamily: 'mrt-rglr' }}>
+                                    {myBrandDetails.detail}
+                                </Text>
+                            </View>
+                            {myBrandDetails?.profileUrl &&
                                 <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
                                     <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                        Specialities
+                                        Profile
                                     </Text>
+                                    <Pressable
+                                        style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                        onPress={() => Linking.openURL(myBrandDetails?.profileUrl)}
+                                    >
+                                        <Text style={styles.greenBackground}>
+                                            Go to {myBrandDetails.name}'s Profile
+                                        </Text>
+                                    </Pressable>
                                 </View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    alignSelf: 'baseline',
-                                    left: '5%'
-                                }}>
-                                    {myBrandDetails?.linking?.map((i, index) => {
-                                        return (
-                                            <Pressable
-                                                key={index}
-                                                style={{ marginHorizontal: responsiveScreenWidth(1) }}
-                                                onPress={() => navigation.navigate('Proof')}
-                                            >
-                                                <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
-                                                    {i.name}
-                                                </Text>
-                                            </Pressable>
-                                        )
-                                    })}
-                                </View>
-                            </>
-                        }
+                            }
 
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
-                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Social Links
-                            </Text>
-                            <View style={styles.imagesContainer}>
-                                <IconComponent
-                                    socialLink={myBrandDetails?.facebookUrl}
-                                    imageSource={require('../../../src/assets/images/facebook.png')}
-                                    iconName={'facebook'}
-                                />
-                                <IconComponent
-                                    socialLink={myBrandDetails?.instagramUrl || undefined}
-                                    imageSource={require('../../../src/assets/images/instagram.png')}
-                                    iconName={'instagram'}
-                                />
-                                <IconComponent
-                                    socialLink={myBrandDetails?.twitterUrl && myBrandDetails?.twitterUrl}
-                                    imageSource={require('../../../src/assets/images/twitter.png')}
-                                    iconName={'twitter'}
-                                />
+                            {myBrandDetails?.linking &&
+                                <>
+                                    <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
+                                        <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                            Specialities
+                                        </Text>
+                                    </View>
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-start',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        alignSelf: 'baseline',
+                                        left: '5%'
+                                    }}>
+                                        {myBrandDetails?.linking?.map((i, index) => {
+                                            return (
+                                                <Pressable
+                                                    key={index}
+                                                    style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                                    onPress={() => navigation.navigate('Proof')}
+                                                >
+                                                    <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
+                                                        {i.name}
+                                                    </Text>
+                                                </Pressable>
+                                            )
+                                        })}
+                                    </View>
+                                </>
+                            }
+
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
+                                <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                    Social Links
+                                </Text>
+                                <View style={styles.imagesContainer}>
+                                    <IconComponent
+                                        socialLink={myBrandDetails?.facebookUrl}
+                                        imageSource={require('../../../src/assets/images/facebook.png')}
+                                        iconName={'facebook'}
+                                    />
+                                    <IconComponent
+                                        socialLink={myBrandDetails?.instagramUrl || undefined}
+                                        imageSource={require('../../../src/assets/images/instagram.png')}
+                                        iconName={'instagram'}
+                                    />
+                                    <IconComponent
+                                        socialLink={myBrandDetails?.twitterUrl && myBrandDetails?.twitterUrl}
+                                        imageSource={require('../../../src/assets/images/twitter.png')}
+                                        iconName={'twitter'}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -170,6 +159,33 @@ const styles = StyleSheet.create({
             },
         }),
     },
+    cardContainer: {
+        alignItems: "center",
+        marginTop: responsiveScreenHeight(2),
+        backgroundColor: 'white',
+        width: '95%',
+        alignSelf: 'center',
+        padding: 10,
+        margin: 10,
+        overflow: 'hidden',
+        borderRadius: responsiveScreenFontSize(1),
+        borderColor: 'grey',
+        shadowColor: "#000", // Shadow color
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 1, // Shadow opacity (adjust as needed)
+        shadowRadius: 1, // Shadow radius
+        elevation: 6, // For Android
+    },
+    cardChildContainer: {
+        alignItems: "center",
+        backgroundColor: 'white',
+        borderRadius: 10,
+        width: '100%',
+    },
+
     imagesContainer: {
         flexDirection: "row",
         gap: responsiveFontSize(1),
@@ -231,13 +247,14 @@ const styles = StyleSheet.create({
     },
     desciptionTxt: {
         color: "black",
-        fontSize: responsiveScreenFontSize(1.5),
+        fontSize: responsiveScreenFontSize(1.9),
         fontFamily: 'mrt-rglr'
     },
     greenBackground: {
         color: "black",
         fontFamily: 'mrt-rglr',
         alignSelf: 'flex-start',
+        fontSize: responsiveScreenFontSize(1.9),
         padding: responsiveScreenFontSize(1),
         backgroundColor: "#BFFF00",
         borderRadius: responsiveScreenFontSize(1),

@@ -43,60 +43,68 @@ const BrandDetails = ({ route }) => {
                             role={myBrandDetails.descriptionSmall}
                         />
                     </View>
-
-                    <View style={{ alignItems: "center", marginTop: responsiveScreenHeight(2), }}>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Description
-                            </Text>
-                        </View>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
-                            <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.5), fontFamily: 'mrt-rglr' }}>
-                                {myBrandDetails.description}
-                            </Text>
-                        </View>
-                        <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
-                            <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
-                                Specialities
-                            </Text>
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            alignSelf: 'baseline',
-                            left: '5%'
-                        }}>
-                            {myBrandDetails?.linking?.map((i, index) => {
-                                return (
-                                    <View
-                                        key={index}
-                                        style={{ marginHorizontal: responsiveScreenWidth(1) }}
-                                    >
-                                        <Text style={{ color: "black", alignSelf: 'flex-start', padding: responsiveScreenFontSize(1), backgroundColor: "#BFFF00", borderRadius: 10, }}>
-                                            {i.name}
-                                        </Text>
-                                    </View>
-                                )
-                            })}
-                        </View>
-                        <View style={{ alignSelf: 'flex-start', margin: responsiveScreenHeight(2) }}>
-                            <Text style={styles.titleText}>Alternative:</Text>
-                            <Text style={styles.desciptionTxt}>No alternatives researched yet</Text>
-                        </View>
-
-                        {myBrandDetails?.proofLinks &&
-                            <Pressable
-                                style={styles.linkOpacity}
-                                onPress={() => Linking.openURL(myBrandDetails?.proofLinks)}
-                            >
-                                <Text style={styles.greenBackground}>
-                                    Proof
+                    <View style={styles.cardContainer}>
+                        <View style={styles.cardChildContainer}>
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
+                                <Text style={{ color: "black", fontFamily: 'mrt-mid', fontSize: responsiveScreenFontSize(2) }}>
+                                    Description
                                 </Text>
-                            </Pressable>
-                        }
+                            </View>
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), }}>
+                                <Text style={{ color: "black", fontSize: responsiveScreenFontSize(1.9), fontFamily: 'mrt-rglr' }}>
+                                    {myBrandDetails.description}
+                                </Text>
+                            </View>
+                            <View style={{ justifyContent: "center", width: responsiveScreenWidth(90), marginTop: responsiveScreenHeight(2) }}>
+                                <Text style={styles.titleText}>
+                                    Specialities
+                                </Text>
+                            </View>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-start',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                alignSelf: 'baseline',
+                                left: '5%'
+                            }}>
+                                {myBrandDetails?.linking?.map((i, index) => {
+                                    return (
+                                        <View
+                                            key={index}
+                                            style={{ marginHorizontal: responsiveScreenWidth(1) }}
+                                        >
+                                            <Text style={{
+                                                color: "black",
+                                                alignSelf: 'flex-start',
+                                                padding: responsiveScreenFontSize(1),
+                                                backgroundColor: "#BFFF00",
+                                                borderRadius: 10,
+                                                fontFamily: 'mrt-rglr'
+                                            }}>
+                                                {i.name}
+                                            </Text>
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                            <View style={{ alignSelf: 'flex-start', marginVertical: responsiveScreenHeight(2) }}>
+                                <Text style={styles.titleText}>Alternative:</Text>
+                                <Text style={styles.desciptionTxt}>No alternatives researched yet</Text>
+                            </View>
 
+                            {myBrandDetails?.proofLinks &&
+                                <Pressable
+                                    style={styles.linkOpacity}
+                                    onPress={() => Linking.openURL(myBrandDetails?.proofLinks)}
+                                >
+                                    <Text style={styles.greenBackground}>
+                                        Proof
+                                    </Text>
+                                </Pressable>
+                            }
+
+                        </View>
                     </View>
                 </ScrollView>
             </View>
@@ -125,6 +133,33 @@ const styles = StyleSheet.create({
             },
         }),
     },
+    cardContainer: {
+        alignItems: "center",
+        marginTop: responsiveScreenHeight(2),
+        backgroundColor: 'white',
+        width: '95%',
+        alignSelf: 'center',
+        padding: 10,
+        margin: 10,
+        overflow: 'hidden',
+        borderRadius: responsiveScreenFontSize(1),
+        borderColor: 'grey',
+        shadowColor: "#000", // Shadow color
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 1, // Shadow opacity (adjust as needed)
+        shadowRadius: 1, // Shadow radius
+        elevation: 6, // For Android
+    },
+    cardChildContainer: {
+        alignItems: "center",
+        // marginTop: responsiveScreenHeight(2),
+        backgroundColor: 'white',
+        borderRadius: 10,
+        width: '100%',
+    },
     itemContainer2: {
         margin: 9,
         width: responsiveScreenWidth(40),
@@ -143,7 +178,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: responsiveScreenFontSize(2),
         color: "black",
-        fontFamily: 'mrt-rglr'
+        fontFamily: 'mrt-mid'
     },
     desciptionTxt: {
         color: "black",

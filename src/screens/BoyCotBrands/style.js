@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
 import {
-    responsiveScreenWidth,
     responsiveScreenFontSize,
-    responsiveScreenHeight
-} from 'react-native-responsive-dimensions'
+    responsiveScreenHeight,
+    responsiveScreenWidth
+} from 'react-native-responsive-dimensions';
 import { COLORS } from "../../utility/colors/LightColors";
 
 
@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
         height: responsiveScreenHeight(8)
     },
     exploreview: {
-        margin: '5%',
+        marginVertical: '5%',
         flexWrap: "wrap",
-        flexDirection: "row"
+        flexDirection: "row",
     },
     exploreview2: {
         marginVertical: "5%",
@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     latestbrandstouchable: {
-        backgroundColor: COLORS.lightPrimaryColor,
+        backgroundColor: COLORS.primaryColor,
         marginBottom: responsiveScreenFontSize(0.5),
         width: '100%',
         alignSelf: 'center',
         borderRadius: responsiveScreenFontSize(1)
     },
-    nobrandview : {
+    nobrandview: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'

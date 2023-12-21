@@ -65,7 +65,11 @@ const BoyCotBrands = () => {
                     (
                         <View style={styles.exploreview}>
                             {data?.map((item, index) => (
-                                <View key={index} style={{ marginVertical: "5%", marginHorizontal: "2%" }}>
+                                <View key={index} style={{
+                                    marginVertical: "5%",
+                                    width: '29%',
+                                    marginHorizontal: '2%',
+                                }}>
                                     <ExploreView
                                         key={index}
                                         iconName='cross'
@@ -158,76 +162,4 @@ const BoyCotBrands = () => {
         </View >
     )
 }
-
-// const styles = StyleSheet.create({
-//     itemContainer: {
-//         margin: 6,
-//         alignItems: "center",
-//         justifyContent: "center",
-//         padding: 9,
-//         borderRadius: 10,
-//         overflow: 'hidden',
-//         ...Platform.select({
-//             android: {
-//                 elevation: 4,
-//             },
-//         }),
-//     },
-//     itemContainer2: {
-//         margin: 6,
-//         backgroundColor: 'white',
-//         flexDirection: "row",
-//         alignItems: "center",
-//         justifyContent: "space-between",
-//         padding: 10,
-//         width: responsiveScreenWidth(90),
-//         borderRadius: 10,
-//         overflow: 'hidden',
-//         ...Platform.select({
-//             android: {
-//                 elevation: 4,
-//             },
-//         }),
-//     },
-//     titleText: {
-//         fontSize: responsiveScreenFontSize(2),
-//         color: "black",
-//         fontFamily: 'mrt-rglr'
-//     },
-//     titleText2: {
-//         fontSize: responsiveScreenFontSize(2),
-//         color: "black",
-//         fontFamily: 'mrt-mid'
-//     },
-//     titleText3: {
-//         fontSize: responsiveScreenFontSize(2),
-//         color: "black",
-//         fontFamily: 'mrt-rglr'
-//     },
-//     packageDetailsContainer: {
-//         margin: responsiveScreenWidth(4),
-//         backgroundColor: 'white',
-//         borderRadius: 2,
-//         padding: 16,
-//         shadowColor: '#000',
-//         shadowOffset: { width: 0, height: 2 },
-//         shadowOpacity: 0.2,
-//         shadowRadius: 4,
-//         elevation: 2, // For Android
-//         margin: responsiveScreenWidth(4)
-//     },
-//     loader: {
-//         minHeight: responsiveScreenHeight(10),
-//         justifyContent: "center",
-//         alignItems: "center",
-//         marginTop: "70%"
-//     },
-//     flatlist: {
-//         flex: 1,
-//         alignItems: "center",
-//         marginTop: "5%"
-//     },
-
-// });
-
 export default BoyCotBrands

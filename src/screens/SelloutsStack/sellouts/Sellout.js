@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Modal, ScrollView, Text, Pressable, View } from 'react-native'
+import { ActivityIndicator, Image, Modal, Pressable, ScrollView, Text, View } from 'react-native'
 import { responsiveFontSize, responsiveScreenFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { getRandomPeople, getTotalPeople } from '../../../api/hooks'
 import { getCategoryPeoples } from '../../../api/schema/queries'
@@ -76,7 +76,7 @@ const Sellouts = () => {
                                                     <Pressable
 
                                                         key={index} style={{
-                                                            backgroundColor: COLORS.lightPrimaryColor,
+                                                            backgroundColor: COLORS.primaryColor,
                                                             marginBottom: responsiveScreenFontSize(0.5),
                                                             width: '100%',
                                                             alignSelf: 'center',

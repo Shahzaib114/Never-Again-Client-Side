@@ -1,4 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useIsFocused } from '@react-navigation/native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import {
@@ -199,7 +200,7 @@ export default function CodeScanner() {
                                         Scanned Successfully
                                     </Text>
                                     <Text style={styles.titleTxt}>
-                                        name:<Text style={styles.descriptionTxt}> {scanResults?.name ? scanResults?.name : 'NaN'}{'\n'}</Text>
+                                        Name:<Text style={styles.descriptionTxt}> {scanResults?.name ? scanResults?.name : 'NaN'}{'\n'}</Text>
                                         Brand: <Text style={styles.descriptionTxt}>{scanResults?.brand ? scanResults?.brand : 'NaN'}{'\n'}</Text>
                                         Category: <Text style={styles.descriptionTxt}>{scanResults?.category ? scanResults?.category : 'NaN'}{'\n'}</Text>
                                         Description: <Text style={styles.descriptionTxt}>{scanResults?.description ? scanResults?.description : 'NaN'}{'\n'}</Text>
@@ -211,8 +212,17 @@ export default function CodeScanner() {
                                     setStartScan(true)
                                     setModalVisible(false)
                                 }}
-                                style={{ padding: responsiveFontSize(1), backgroundColor: 'rgb(107, 183, 254)', borderRadius: responsiveFontSize(0.5) }}
+                                style={{
+                                    padding: responsiveFontSize(1),
+                                    flexDirection: 'row',
+                                    backgroundColor: 'rgb(107, 183, 254)',
+                                    borderRadius: responsiveFontSize(0.5),
+                                    justifyContent: 'space-around',
+                                    alignItems: 'center',
+                                    width:'40%'
+                                }}
                             >
+                                <Ionicons name='barcode-outline' size={responsiveFontSize(4)} />
                                 <Text style={styles.titleTxt}>
                                     Scan Again
                                 </Text>
@@ -288,9 +298,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginVertical: scale(10)
     },
-    topFirstView: {
-
-    },
     topContainerItems: {
         color: 'black',
         margin: scale(10)
@@ -299,16 +306,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    topSecondImg: {
-
-    },
-
-    topThirdView: {
-
-    },
-    topThirdImg: {
-
     },
     scannerTxtContainer: {
         width: '100%',
@@ -328,10 +325,9 @@ const styles = StyleSheet.create({
     },
     descriptionTxt: {
         fontFamily: 'mrt-rglr',
-        fontSize: scale(10),
+        fontSize: responsiveFontSize(1.9),
         color: COLORS.blackColor
     },
-
     frameContainer: {
         marginVertical: '10%',
     },
@@ -351,13 +347,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: responsiveFontSize(1),
         padding: responsiveFontSize(1),
-
     },
     rotationImg: {
         width: '100%',
         height: '100%',
-
-
     }
 
 });
