@@ -34,7 +34,7 @@ const BoyCotBrands = () => {
             variables: {
                 categoryName: categoryName,
                 first: 10,
-                ...(value && value.length > 2 ? { value } : { value: "" }),
+                ...(value && value?.length > 2 ? { value } : { value: "" }),
             },
         })
         setMyLatestBrands(res?.data?.brands)
@@ -55,7 +55,7 @@ const BoyCotBrands = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ flexGrow: 1 }}
             >
-                {data.length === 0 ?
+                {data?.length === 0 ?
                     (
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
                             <ActivityIndicator size={'large'} />

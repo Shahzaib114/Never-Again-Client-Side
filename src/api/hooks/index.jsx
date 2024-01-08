@@ -46,7 +46,7 @@ export function useApprovedBrands(props) {
         orderBy,
         first,
         skip,
-        ...(value && value.length > 2 ? { value } : { value: "" }), // Only include value if it meets certain criteria
+        ...(value && value?.length > 2 ? { value } : { value: "" }), // Only include value if it meets certain criteria
       },
     });
 
@@ -96,7 +96,7 @@ export function useBrands(props) {
         orderBy,
         first,
         skip,
-        ...(value && value.length > 2 ? { value } : { value: "" }), // Only include value if it meets certain criteria
+        ...(value && value?.length > 2 ? { value } : { value: "" }), // Only include value if it meets certain criteria
       },
     });
     if (loading) {

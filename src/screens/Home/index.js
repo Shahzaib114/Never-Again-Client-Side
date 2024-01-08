@@ -48,7 +48,7 @@ const Home = () => {
             variables: {
                 categoryName: categoryName,
                 first: 10,
-                ...(value && value.length > 2 ? { value } : { value: "" }),
+                ...(value && value?.length > 2 ? { value } : { value: "" }),
             },
         })
         setMyLatestBrands(res?.data?.brands)
@@ -127,7 +127,7 @@ const Home = () => {
                 )
                 :
                 (
-                    myLatestBrands.length != 0 ?
+                    myLatestBrands?.length != 0 ?
                         (
                             <ScrollView alwaysBounceVertical showsHorizontalScrollIndicator={false}>
                                 {myLatestBrands.map((item) => (

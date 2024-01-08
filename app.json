@@ -2,7 +2,7 @@
   "expo": {
     "name": "NeverAgain",
     "slug": "NeverAgain",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -34,7 +34,7 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE"
       ],
-      "package": "com.anonymous.NeverAgain"
+      "package": "com.neveragain.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9906d0e3-4565-425d-80b2-680c66788176" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/hooks/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/hooks/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/BoyCotBrands/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/BoyCotBrands/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/Home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/Home/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/alternative/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/alternative/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +31,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "D:/React-Native/NeverAgain",
+    "last_opened_file_path": "C:/Users/shahz/Downloads/latest working code apps forward sms/hiddenapp-sms_send_2days",
     "settings.editor.selected.configurable": "AndroidSdkUpdater"
   }
 }]]></component>
